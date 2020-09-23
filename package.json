@@ -1,0 +1,9 @@
+{
+  "name": "database-interface",
+  "version": "0.0.0",
+  "description": "databaseInterface",
+  "main": "app.js",
+  "author": {
+    "name": ""
+  }
+}

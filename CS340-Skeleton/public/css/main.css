@@ -1,0 +1,35 @@
+body {
+	padding-top: 60px;
+}
+
+.centerHeader {
+	text-align:center;
+}
+
+.img-fluid {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 70%;
+}
+
+.formTable { 
+	display: table;
+	
+	margin: 0 auto; 
+	padding-top: 20px
+}
+
+.formPair { 
+	display: table-row;
+}
+
+.formLabel { 
+	display: table-cell; 
+}
+
+.formInput { 
+	display: table-cell; 
+
+	margin-left: 10px;
+}

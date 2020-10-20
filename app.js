@@ -6,9 +6,9 @@
 var express = require('express');
 var app = express();
 const session = require('express-session');
-const redis = require('redis');
-const redisStore = require('connect-redis')(session);
-const client  = redis.createClient();
+//const redis = require('redis');
+//const redisStore = require('connect-redis')(session);
+//const client  = redis.createClient();
 /* Load EJS view engine */
 app.set('view engine', 'ejs');
 
@@ -19,7 +19,7 @@ app.set('view engine', 'ejs');
 app.use(session({
     secret: 'ssshhhhh',
     // create new redis store.
-    store: new redisStore({ host: 'localhost', port: 6379, client: client,ttl : 260}),
+    //store: new redisStore({ host: 'localhost', port: 6379, client: client,ttl : 260}),
     saveUninitialized: false,
     resave: false
 }));

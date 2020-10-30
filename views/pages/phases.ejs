@@ -1,0 +1,50 @@
+<!-- views/pages/index.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include ('../partials/head') %>
+</head>
+<body class="container">
+
+<header>
+    <%- include ('../partials/dashboardHeader') %>
+</header>
+
+<main>
+    <div class="jumbotron">
+        <h1>Phases</h1>
+        <h3>View and adjust phase content below.</h3>
+		<table>
+		<thead>
+		<tr>
+			<th>Phase ID</th>
+			<th>Phase Name</th>
+			<th>Job ID</th>
+			<th></th>
+		</thead>
+		<tbody>
+		<% myUsers.forEach(function(thing){ %>
+        <tr>
+			<td><%= thing.pid %></td>
+			<td><input type="text" value="<%= thing.pname %>"></td>
+			<td><input type="text" value="<%= thing.jid %>"></td>
+			<td>
+				<button type="button">Submit</button>
+			</td>
+			<td>
+				<button type="button">Delete</button>
+			</td>
+		</tr>
+      <% }) %>
+	  </tbody>
+	  </table>
+    </div>
+</main>
+
+<footer>
+    <%- include ('../partials/footer') %>
+</footer>
+
+</body>
+</html>

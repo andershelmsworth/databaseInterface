@@ -1,0 +1,54 @@
+<!-- views/pages/index.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include ('../partials/head') %>
+</head>
+<body class="container">
+
+<header>
+    <%- include ('../partials/dashboardHeader') %>
+</header>
+
+<main>
+    <div class="jumbotron">
+        <h1>Equip:Crew M:M Table</h1>
+        <h3>View and delete relationships between equipment and crews below.</h3>
+		<table>
+		<thead>
+		<tr>
+			<th>Relation ID</th>
+			<th>Equipment ID</th>
+			<th>Crew ID</th>
+			<th></th>
+		</thead>
+		<tbody>
+		<% myUsers.forEach(function(thing){ %>
+        <tr>
+			<td><%= thing.rid %></td>
+			<td><%= thing.eid %></td>
+			<td><%= thing.cid %></td>
+			<td>
+			<button type="button">Delete</button>
+			</td>
+		</tr>
+      <% }) %>
+	  </tbody>
+	  </table>
+	  <style type="text/css">
+	  table {
+		border-collapse: separate;
+		border-spacing: 12px 7px;
+		margin-left: -12px !important;
+		}
+	  </style>
+    </div>
+</main>
+
+<footer>
+    <%- include ('../partials/footer') %>
+</footer>
+
+</body>
+</html>

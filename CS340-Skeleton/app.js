@@ -6,20 +6,20 @@
 var express = require('express');
 var app = express();
 const session = require('express-session');
-const redis = require('redis');
-const redisStore = require('connect-redis')(session);
-const client  = redis.createClient();
+// const redis = require('redis');
+// const redisStore = require('connect-redis')(session);
+// const client  = redis.createClient();
 /* Load EJS view engine */
 app.set('view engine', 'ejs');
 
 /* load database info, instantiate connection*/
-// var mysql = require('./dbcon.js');
-// app.set('mysql', mysql);
+var mysql = require('./dbcon.js');
+app.set('mysql', mysql);
 
 app.use(session({
     secret: 'ssshhhhh',
     // create new redis store.
-    store: new redisStore({ host: 'localhost', port: 6379, client: client,ttl : 260}),
+    // store: new redisStore({ host: 'localhost', port: 6379, client: client,ttl : 260}),
     saveUninitialized: false,
     resave: false
 }));
@@ -42,6 +42,9 @@ var route_login = require("./routes/login.js");
 var route_createAccount = require("./routes/createAccount.js");
 var route_dashboard = require("./routes/dashboard.js");
 var route_logout = require("./routes/logout.js");
+var route_jobs = require("./routes/jobs.js");
+var route_equipment = require("./routes/equipment.js");
+var route_companies = require("./routes/companies.js");
 
 /* tell our app (express) to use the above loaded functions */
 app.use(route_index);
@@ -49,6 +52,9 @@ app.use(route_login);
 app.use(route_createAccount);
 app.use(route_dashboard);
 app.use(route_logout);
+app.use(route_jobs);
+app.use(route_equipment);
+app.use(route_companies);
 
 
 

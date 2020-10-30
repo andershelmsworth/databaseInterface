@@ -12,10 +12,109 @@
 </header>
 
 <main>
-    <div class="jumbotron">
-        <h1>USER DASHBOARD</h1>
-        <h3>CONTENT CONTENT CONTENT</h3>
+    <div class="jumbotron" style="height: auto !important;">
+        <h1>Financials Dashboard</h1><br>
+        <h3>View, edit, and add Job Cost information below.</h3><br>
+		<h5>Use the search boxes below to filter expenses, or scroll to the bottom to add a new expense.</h5>
+	<br>
+	<table id="jcost">
+		<thead>
+			<tr>
+				<th>Date/Time</th>
+				<th>Equipment</th>
+				<th>Job</th>
+				<th>Crew</th>
+				<th>Phase</th>
+				<th>Cost Type</th>
+				<th>Hours</th>
+				<th>Rate</th>
+				<th></th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+			<td><input type="datetime-local" id="dtime2" name="dtime2"></td>
+			<td><input type="number" id="eid2" name="eid2"></td>
+			<td><input type="number" id="jid2" name="jid2"></td>
+			<td><input type="number" id="cid2" name="cid2"></td>
+			<td><input type="number" id="pid2" name="pid2"></td>
+			<td>
+				<select id="ct2" name="ct2">
+					<option value="ls2">Lump Sum</option>
+					<option value="cplus2">Cost Plus</option>
+				</select></td>
+			<td><input type="number" id="hours2" name="hours2"></td>
+			<td><input type="number" id="rate2" name="rate2"></td>
+			<td><input type="submit" value="Filter"></td>
+			<td><input type="submit" value="Reset Filters"></td>
+			</tr>
+			
+			<% myUsers.forEach(function(thing){ %>
+        <tr>
+			<td><%= thing.dt %></td>
+			<td><%= thing.eid %></td>
+			<td><%= thing.jid %></td>
+			<td><%= thing.cid %></td>
+			<td><%= thing.pid %></td>
+			<td><%= thing.ct %></td>
+			<td><%= thing.hr %></td>
+			<td><%= thing.rt %></td>
+			<td>
+			<button type="button">Edit</button>
+			</td>
+			<td>
+			<button type="button">Delete</button>
+			</td>
+		</tr>
+      <% }) %>
+	  
+		</tbody>
+	</table>
+	<br>
+	<br>
+	
+	<table><tbody><tr><td>
+    <span id="add">
+    <h5>Add a new expense item</h5>
+		<form>
+		<label for="dtime">Date/Time</label><br>
+  <input type="datetime-local" id="dtime" name="dtime"><br><br>
+  <label for="eid">Equipment ID</label><br>
+  <input type="number" id="eid" name="eid"><br>
+  <label for="jid">Job ID</label><br>
+  <input type="number" id="jid" name="jid"><br>
+  <label for="cid">Crew ID</label><br>
+  <input type="number" id="cid" name="cid"><br>
+  <label for="pid">Phase ID</label><br>
+  <input type="number" id="pid" name="pid"><br>
+  <label for="ct">Cost Type</label><br>
+<select id="ct" name="ct">
+  <option value="ls">Lump Sum</option>
+  <option value="cplus">Cost Plus</option>
+</select><br>
+<label for="hours">Hours</label><br>
+  <input type="number" id="hours" name="hours"><br>
+  <label for="rate">Rate</label><br>
+  <input type="number" id="rate" name="rate"><br>
+  <input type="submit" value="Submit"><br>
+</form>
+		<br>
+    </span>
+    </td>
+    </tr></tbody></table>
+	
     </div>
+    <style type="text/css">
+	  table {
+		border-collapse: separate;
+		border-spacing: 12px 7px;
+		margin-left: -12px !important;
+		}
+		#jcost input {
+		width: 93px;
+		}
+	  </style>
 </main>
 
 <footer>

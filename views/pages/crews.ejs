@@ -13,30 +13,38 @@
 
 <main>
     <div class="jumbotron">
-        <h1>Crews</h1>
-        <h3>View and adjust crews below.</h3>
+    <h1>Crews</h1>
+        <h3>View and add job crews below.</h3><br>
+		<h5>Add a new crew</h5>
+		<form>
+		<label for="cname">Crew Name</label><br>
+  <input type="text" id="cname" name="cname"><br><br>
+  <input type="submit" value="Submit"><br>
+</form>
+		<br>
+		<h5>Browse existing crews</h5>
 		<table>
 		<thead>
 		<tr>
 			<th>Crew ID</th>
 			<th>Crew Name</th>
-			<th></th>
 		</thead>
 		<tbody>
 		<% myUsers.forEach(function(thing){ %>
         <tr>
 			<td><%= thing.cid %></td>
-			<td><input type="text" value="<%= thing.cname %>"></td>
-			<td>
-				<button type="button">Submit</button>
-			</td>
-			<td>
-				<button type="button">Delete</button>
-			</td>
+			<td><%= thing.cname %></td>
 		</tr>
       <% }) %>
 	  </tbody>
 	  </table>
+	  <style type="text/css">
+	  table {
+		border-collapse: separate;
+		border-spacing: 12px 7px;
+		margin-left: -12px !important;
+		}
+	  </style>
     </div>
 </main>
 

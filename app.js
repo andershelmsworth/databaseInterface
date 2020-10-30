@@ -41,8 +41,10 @@ var route_index = require("./routes/index.js");
 var route_dashboard = require("./routes/dashboard.js");
 var route_phases = require("./routes/phases.js");
 var route_crews = require("./routes/crews.js");
+var route_phase_crew = require("./routes/phaseCrew.js");
 var route_jobs = require("./routes/jobs.js");
 var route_equipment = require("./routes/equipment.js");
+var route_equip_crew = require("./routes/equipCrew.js");
 var route_companies = require("./routes/companies.js");
 
 /* tell our app (express) to use the above loaded functions */
@@ -50,8 +52,10 @@ app.use(route_index);
 app.use(route_dashboard);
 app.use(route_phases);
 app.use(route_crews);
+app.use(route_phase_crew);
 app.use(route_jobs);
 app.use(route_equipment);
+app.use(route_equip_crew);
 app.use(route_companies);
 
 

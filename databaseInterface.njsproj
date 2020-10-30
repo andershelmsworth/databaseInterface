@@ -31,6 +31,36 @@
     <Content Include="app.js" />
     <Content Include="package.json" />
     <Content Include="README.md" />
+    <Content Include="routes\companies.js" />
+    <Content Include="routes\crews.js" />
+    <Content Include="routes\dashboard.js" />
+    <Content Include="routes\equipCrew.js" />
+    <Content Include="routes\equipment.js" />
+    <Content Include="routes\index.js" />
+    <Content Include="routes\jobs.js" />
+    <Content Include="routes\phaseCrew.js" />
+    <Content Include="routes\phases.js" />
+    <Content Include="views\404.ejs" />
+    <Content Include="views\500.ejs" />
+    <Content Include="views\pages\companies.ejs" />
+    <Content Include="views\pages\crews.ejs" />
+    <Content Include="views\pages\dashboard.ejs" />
+    <Content Include="views\pages\equipCrew.ejs" />
+    <Content Include="views\pages\equipment.ejs" />
+    <Content Include="views\pages\index.ejs" />
+    <Content Include="views\pages\jobs.ejs" />
+    <Content Include="views\pages\phaseCrew.ejs" />
+    <Content Include="views\pages\phases.ejs" />
+    <Content Include="views\partials\dashboardHeader.ejs" />
+    <Content Include="views\partials\footer.ejs" />
+    <Content Include="views\partials\head.ejs" />
+    <Content Include="views\partials\mainHeader.ejs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="routes\" />
+    <Folder Include="views\" />
+    <Folder Include="views\pages\" />
+    <Folder Include="views\partials\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
 </Project>

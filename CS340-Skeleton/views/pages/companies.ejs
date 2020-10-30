@@ -1,0 +1,50 @@
+<!-- views/pages/index.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include ('../partials/head') %>
+</head>
+<body class="container">
+
+<header>
+    <%- include ('../partials/dashboardHeader') %>
+</header>
+
+<main>
+    <div class="jumbotron">
+        <h1>Companies</h1>
+        </br>
+        <h2 class="centerHeader">New Companies form filler</h2>
+        <form class="formTable" method="post">
+            <div class="formPair">
+                <label class="formLabel" for="companyName">Company Name:</label>
+                <input class="formInput" type="text" id="companyName" name="companyName"><br><br>
+            </div>
+            <div class="formPair">
+                <label class="formLabel" for="budget">Budget:</label>
+                <input class="formInput" type="integer" id="budget" name="budget"><br><br>
+            </div>
+            <div class="formPair">
+                <label class="formLabel" for="totalExpenses">Total Expenses:</label>
+                <input class="formInput" type="text" id="totalExpenses" name="totalExpenses"><br><br>
+            </div>
+            <div class="formPair">
+                <label class="formLabel" for="totalRevenue">Total Revenue:</label>
+                <input class="formInput" type="text" id="totalRevenue" name="totalRevenue"><br><br>
+            </div>
+            <div class="formPair">
+                <label class="formLabel" for="hqLocation">HQ Location:</label>
+                <input class="formInput" type="text" id="hqLocation" name="hqLocation"><br><br>
+            </div>
+            <input type="submit" value="Add Company" style="margin-top: 15px">
+        </form>      
+    </div>
+</main>
+
+<footer>
+    <%- include ('../partials/footer') %>
+</footer>
+
+</body>
+</html>

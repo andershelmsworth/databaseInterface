@@ -1,0 +1,42 @@
+<!-- views/pages/index.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include ('../partials/head') %>
+</head>
+<body class="container">
+
+<header>
+    <%- include ('../partials/dashboardHeader') %>
+</header>
+
+<main>
+    <div class="jumbotron">
+        <h1>Jobs</h1>
+        </br>
+        <h2 class="centerHeader">New Job form filler</h2>
+    	<form class="formTable" method="post">
+            <div class="formPair">
+                <label class="formLabel" for="jobName">Job Name:</label>
+                <input class="formInput" type="text" id="jobName" name="jobName"><br><br>
+            </div>
+            <div class="formPair">
+                <label class="formLabel" for="companyName">Company Name:</label>
+                <input class="formInput" type="text" id="companyName" name="companyName"><br><br>
+            </div>
+            <div class="formPair">
+                <label class="formLabel" for="location">Location:</label>
+                <input class="formInput" type="text" id="location" name="location"><br><br>
+            </div>
+            <input type="submit" value="Add Job" style="margin-top: 15px">
+        </form>     
+    </div>
+</main>
+
+<footer>
+    <%- include ('../partials/footer') %>
+</footer>
+
+</body>
+</html>

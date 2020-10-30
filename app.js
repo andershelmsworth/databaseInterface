@@ -38,24 +38,18 @@ app.use('/public',  express.static(__dirname + '/public'));
 
 /* Load in the code which processes the routing  */
 var route_index = require("./routes/index.js");
-var route_login = require("./routes/login.js");
-var route_createAccount = require("./routes/createAccount.js");
 var route_dashboard = require("./routes/dashboard.js");
 var route_phases = require("./routes/phases.js");
 var route_crews = require("./routes/crews.js");
-var route_logout = require("./routes/logout.js");
 var route_jobs = require("./routes/jobs.js");
 var route_equipment = require("./routes/equipment.js");
 var route_companies = require("./routes/companies.js");
 
 /* tell our app (express) to use the above loaded functions */
 app.use(route_index);
-app.use(route_login);
-app.use(route_createAccount);
 app.use(route_dashboard);
 app.use(route_phases);
 app.use(route_crews);
-app.use(route_logout);
 app.use(route_jobs);
 app.use(route_equipment);
 app.use(route_companies);

@@ -15,6 +15,19 @@
     <div class="jumbotron">
         <h1>Phases</h1>
         <h3>View and adjust phase content below.</h3>
+		<br>
+		<h5>Add a new phase</h5>
+		<form>
+		<label for="pname">Phase Name</label><br>
+  <input type="text" id="pname" name="pname"><br>
+  <label for="jobid">Job ID:</label><br>
+  <input type="text" id="jobid" name="jobid"><br><br>
+  <input type="submit" value="Submit"><br>
+</form>
+		<br>
+		
+		
+		<h5>Browse existing phases</h5>
 		<table>
 		<thead>
 		<tr>
@@ -27,14 +40,8 @@
 		<% myUsers.forEach(function(thing){ %>
         <tr>
 			<td><%= thing.pid %></td>
-			<td><input type="text" value="<%= thing.pname %>"></td>
-			<td><input type="text" value="<%= thing.jid %>"></td>
-			<td>
-				<button type="button">Submit</button>
-			</td>
-			<td>
-				<button type="button">Delete</button>
-			</td>
+			<td><%= thing.pname %></td>
+			<td><%= thing.jid %></td>
 		</tr>
       <% }) %>
 	  </tbody>

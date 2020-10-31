@@ -14,31 +14,54 @@
 <main>
     <div class="jumbotron">
         <h1>Equipment</h1>
-    </br>
-        <h2 class="centerHeader">New Equipment form filler</h2>
-        <form class="formTable" method="post">
-            <div class="formPair">
-                <label class="formLabel" for="equipmentName">Equipment Name:</label>
-                <input class="formInput" type="text" id="equipmentName" name="equipmentName"><br><br>
-            </div>
-            <div class="formPair">
-                <label class="formLabel" for="type">Type:</label>
-                <input class="formInput" type="text" id="type" name="type"><br><br>
-            </div>
-            <div class="formPair">
-                <label class="formLabel" for="weight">Weight:</label>
-                <input class="formInput" type="integer" id="weight" name="weight"><br><br>
-            </div>
-            <div class="formPair">
-                <label class="formLabel" for="fuelType">Fuel Type:</label>
-                <input class="formInput" type="text" id="fuelType" name="fuelType"><br><br>
-            </div>
-            <div class="formPair">
-                <label class="formLabel" for="purchaseDate">Purchase Date:</label>
-                <input class="formInput" type="date" id="purchaseDate" name="purchaseDate"><br><br>
-            </div>
-            <input type="submit" value="Add Equipment" style="margin-top: 15px">
-        </form>         
+        <h3>View and add job equipment below.</h3><br>
+        <h5>Add new equipment</h5>
+        <form>
+            <label for="ename">Equipment Name:</label><br>
+            <input type="text" id="ename" name="ename"><br><br>
+            <label for="etype">Equipment Type:</label><br>
+            <input type="text" id="etype" name="etype"><br><br>
+            <label for="eweight">Equipment Weight:</label><br>
+            <input type="text" id="eweight" name="eweight"><br><br>
+            <label for="ftype">Fuel Type:</label><br>
+            <input type="text" id="ftype" name="ftype"><br><br>
+            <label for="edate">Purchase Date:</label><br>
+            <input type="date" id="edate" name="edate"><br><br>
+            <input type="submit" value="Submit"><br>
+        </form>       
+        <br>
+
+        <h5>Browse existing companies</h5>
+        <table>
+        <thead>
+        <tr>
+            <th>Equipment ID</th>
+            <th>Equipment Name</th>
+            <th>Equipment Type</th>
+            <th>Equipment Weight</th>
+            <th>Fuel Type</th>
+            <th>Purchase Date</th>
+        </thead>
+        <tbody>
+        <% myUsers.forEach(function(thing){ %>
+        <tr>
+            <td><%= thing.eid %></td>
+            <td><%= thing.ename %></td>
+            <td><%= thing.etype %></td>
+            <td><%= thing.eweight %></td>
+            <td><%= thing.ftype %></td>
+            <td><%= thing.pdate %></td>
+        </tr>
+        <% }) %>
+        </tbody>
+        </table>
+        <style type="text/css">
+        table {
+        border-collapse: separate;
+        border-spacing: 12px 7px;
+        margin-left: -12px !important;
+        }
+        </style>        
     </div>
 </main>
 

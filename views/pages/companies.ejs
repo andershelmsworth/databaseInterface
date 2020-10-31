@@ -14,31 +14,54 @@
 <main>
     <div class="jumbotron">
         <h1>Companies</h1>
-        </br>
-        <h2 class="centerHeader">New Companies form filler</h2>
-        <form class="formTable" method="post">
-            <div class="formPair">
-                <label class="formLabel" for="companyName">Company Name:</label>
-                <input class="formInput" type="text" id="companyName" name="companyName"><br><br>
-            </div>
-            <div class="formPair">
-                <label class="formLabel" for="budget">Budget:</label>
-                <input class="formInput" type="integer" id="budget" name="budget"><br><br>
-            </div>
-            <div class="formPair">
-                <label class="formLabel" for="totalExpenses">Total Expenses:</label>
-                <input class="formInput" type="text" id="totalExpenses" name="totalExpenses"><br><br>
-            </div>
-            <div class="formPair">
-                <label class="formLabel" for="totalRevenue">Total Revenue:</label>
-                <input class="formInput" type="text" id="totalRevenue" name="totalRevenue"><br><br>
-            </div>
-            <div class="formPair">
-                <label class="formLabel" for="hqLocation">HQ Location:</label>
-                <input class="formInput" type="text" id="hqLocation" name="hqLocation"><br><br>
-            </div>
-            <input type="submit" value="Add Company" style="margin-top: 15px">
-        </form>      
+        <h3>View and add companies below.</h3><br>
+        <h5>Add a new company</h5>
+        <form>
+            <label for="cname">Company Name:</label><br>
+            <input type="text" id="cname" name="cname"><br><br>
+            <label for="cbudget">Company Budget:</label><br>
+            <input type="text" id="cbudget" name="cbudget"><br><br>
+            <label for="texpenses">Total Expenses:</label><br>
+            <input type="text" id="texpenses" name="texpenses"><br><br>
+            <label for="trevenue">Total Revenue:</label><br>
+            <input type="text" id="trevenue" name="trevenue"><br><br>
+            <label for="hqlocation">HQ Location:</label><br>
+            <input type="text" id="hqlocation" name="hqlocation"><br><br>
+            <input type="submit" value="Submit"><br>
+        </form>       
+        <br>
+
+        <h5>Browse existing companies</h5>
+        <table>
+        <thead>
+        <tr>
+            <th>Company ID</th>
+            <th>Company Name</th>
+            <th>Company Budget</th>
+            <th>Total Expenses</th>
+            <th>Total Revenue</th>
+            <th>HQ Location</th>
+        </thead>
+        <tbody>
+        <% myUsers.forEach(function(thing){ %>
+        <tr>
+            <td><%= thing.cid %></td>
+            <td><%= thing.cname %></td>
+            <td><%= thing.cbudget %></td>
+            <td><%= thing.texpenses %></td>
+            <td><%= thing.trevenue %></td>
+            <td><%= thing.hqlocation %></td>
+        </tr>
+        <% }) %>
+        </tbody>
+        </table>
+        <style type="text/css">
+        table {
+        border-collapse: separate;
+        border-spacing: 12px 7px;
+        margin-left: -12px !important;
+        }
+        </style> 
     </div>
 </main>
 

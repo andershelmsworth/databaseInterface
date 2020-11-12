@@ -37,12 +37,12 @@
             <th>Job Location</th>
         </thead>
         <tbody>
-        <% myUsers.forEach(function(thing){ %>
+        <% results.forEach(function(thing){ %>
         <tr>
-            <td><%= thing.jid %></td>
-            <td><%= thing.jname %></td>
-            <td><%= thing.cname %></td>
-            <td><%= thing.jlocation %></td>
+            <td><%= thing.job_id %></td>
+            <td><%= thing.job_name %></td>
+            <td><%= thing.company_id %></td>
+            <td><%= thing.location %></td>
         </tr>
         <% }) %>
         </tbody>

@@ -36,11 +36,11 @@
 			<th></th>
 		</thead>
 		<tbody>
-		<% myUsers.forEach(function(thing){ %>
+		<% results.forEach(function(thing){ %>
         <tr>
-			<td><%= thing.rid %></td>
-			<td><%= thing.eid %></td>
-			<td><%= thing.cid %></td>
+			<td><%= thing.relation_id %></td>
+			<td><%= thing.equip_id %></td>
+			<td><%= thing.crew_id %></td>
 			<td>
 			<button type="button">Delete</button>
 			</td>

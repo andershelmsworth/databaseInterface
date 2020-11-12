@@ -5,7 +5,7 @@
 <head>
     <%- include ('../partials/head') %>
 </head>
-<body class="container">
+<body class="container" style="min-width: 1440px !important;">
 
 <header>
     <%- include ('../partials/dashboardHeader') %>
@@ -20,6 +20,7 @@
 	<table id="jcost">
 		<thead>
 			<tr>
+				<th>Job Cost ID</th>
 				<th>Date/Time</th>
 				<th>Equipment</th>
 				<th>Job</th>
@@ -34,6 +35,7 @@
 		</thead>
 		<tbody>
 			<tr>
+			<td><td>
 			<td><input type="datetime-local" id="dtime2" name="dtime2"></td>
 			<td><input type="number" id="eid2" name="eid2"></td>
 			<td><input type="number" id="jid2" name="jid2"></td>
@@ -50,16 +52,17 @@
 			<td><input type="submit" value="Reset Filters"></td>
 			</tr>
 			
-			<% myUsers.forEach(function(thing){ %>
+			<% results.forEach(function(thing){ %>
         <tr>
-			<td><%= thing.dt %></td>
-			<td><%= thing.eid %></td>
-			<td><%= thing.jid %></td>
-			<td><%= thing.cid %></td>
-			<td><%= thing.pid %></td>
-			<td><%= thing.ct %></td>
-			<td><%= thing.hr %></td>
-			<td><%= thing.rt %></td>
+			<td><%= thing.job_cost_id %></td>
+			<td><%= thing.date_time %></td>
+			<td><%= thing.equip_id %></td>
+			<td><%= thing.job_id %></td>
+			<td><%= thing.crew_id %></td>
+			<td><%= thing.phase_id %></td>
+			<td><%= thing.cost_type %></td>
+			<td><%= thing.hours %></td>
+			<td><%= thing.rate %></td>
 			<td>
 			<button type="button">Edit</button>
 			</td>

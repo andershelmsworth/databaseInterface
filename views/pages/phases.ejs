@@ -36,11 +36,11 @@
 			<th></th>
 		</thead>
 		<tbody>
-		<% myUsers.forEach(function(thing){ %>
+		<% results.forEach(function(thing){ %>
         <tr>
-			<td><%= thing.pid %></td>
-			<td><%= thing.pname %></td>
-			<td><%= thing.jid %></td>
+			<td><%= thing.phase_id %></td>
+			<td><%= thing.phase_name %></td>
+			<td><%= thing.job_id %></td>
 		</tr>
       <% }) %>
 	  </tbody>

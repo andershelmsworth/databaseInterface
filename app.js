@@ -13,8 +13,8 @@ const session = require('express-session');
 app.set('view engine', 'ejs');
 
 /* load database info, instantiate connection*/
-// var mysql = require('./dbcon.js');
-// app.set('mysql', mysql);
+var mysql = require('./dbcon.js');
+app.set('mysql', mysql);
 
 app.use(session({
     secret: 'ssshhhhh',

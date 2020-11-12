@@ -1,26 +1,39 @@
 var express = require('express');
 var router = express.Router();
+const getAllQuery = 'SELECT * FROM `Companies`';
+const mysql = require('../dbcon.js');
 
-router.get('/companies', function(req, res, next) {
+function getAllData(res) {
+	mysql.query(getAllQuery, (err, rows, fields) => {
+		if (err) {
+			next(err);
+			return;
+		}
+		else {
+			//res.json({ rows: rows });
+			let context = {};
+			context = JSON.stringify(rows);
 
-	const myUsers = [{}, {}, {}];
-	for (let i = 0; i < 3; i++) {
-		myUsers[i].cid = i;
-		myUsers[i].cname = "Company " + i;
-		myUsers[i].cbudget = "Budget " + i;
-		myUsers[i].texpenses = i + 1000;
-		myUsers[i].trevenue = i + 10000;
-		myUsers[i].hqlocation = "Location " + i;
-	}
-	res.users = myUsers;
+			res.render('pages/Companies', {
+				results: rows
+			});
+		}
+	});
+};
+
+router.get('/companies', function (req, res, next) {
 
 	/*
 		Server processing code, e.g. DB calls, goes here
 	*/
-
-    res.render('pages/Companies', {
-		myUsers: myUsers
+	mysql.query(getAllQuery, (err, rows, fields) => {
+		if (err) {
+			next(err);
+			return;
+		}
+		getAllData(res);
 	});
+
 });
 
 module.exports = router;

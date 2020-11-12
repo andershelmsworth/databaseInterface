@@ -43,14 +43,14 @@
             <th>Purchase Date</th>
         </thead>
         <tbody>
-        <% myUsers.forEach(function(thing){ %>
+        <% results.forEach(function(thing){ %>
         <tr>
-            <td><%= thing.eid %></td>
-            <td><%= thing.ename %></td>
-            <td><%= thing.etype %></td>
-            <td><%= thing.eweight %></td>
-            <td><%= thing.ftype %></td>
-            <td><%= thing.pdate %></td>
+            <td><%= thing.equip_id %></td>
+            <td><%= thing.equip_name %></td>
+            <td><%= thing.equip_type %></td>
+            <td><%= thing.equip_weight %></td>
+            <td><%= thing.equip_fuel_type %></td>
+            <td><%= thing.equip_purchase_date %></td>
         </tr>
         <% }) %>
         </tbody>

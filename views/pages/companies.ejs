@@ -43,14 +43,14 @@
             <th>HQ Location</th>
         </thead>
         <tbody>
-        <% myUsers.forEach(function(thing){ %>
+        <% results.forEach(function(thing){ %>
         <tr>
-            <td><%= thing.cid %></td>
-            <td><%= thing.cname %></td>
-            <td><%= thing.cbudget %></td>
-            <td><%= thing.texpenses %></td>
-            <td><%= thing.trevenue %></td>
-            <td><%= thing.hqlocation %></td>
+            <td><%= thing.company_id %></td>
+            <td><%= thing.company_name %></td>
+            <td><%= thing.budget %></td>
+            <td><%= thing.total_expenses %></td>
+            <td><%= thing.total_revenue %></td>
+            <td><%= thing.hq_location %></td>
         </tr>
         <% }) %>
         </tbody>

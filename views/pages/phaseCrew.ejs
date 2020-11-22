@@ -18,7 +18,7 @@
 
 		<br>
 		<h5>Add a new relationship</h5>
-		<form>
+		<form id="inputForm">
 		<label for="pid">Phase Name</label><br>
 		<select id="pid" name="pid">
 		<% pidSelections.forEach(function(thing){ %>
@@ -31,8 +31,40 @@
 		<option value="<%= thing.crew_id %>"><%= thing.crew_name %></option>
 		<% }) %>
 		</select><br><br>
-  <input type="submit" value="Submit"><br>
+  <input type="submit" value="Submit" id="inputButton"><br>
 </form>
+<script>
+	  document.getElementById("inputButton").addEventListener("click",
+	function addRel(submission) {
+
+		submission.preventDefault();
+		let fullUrl = "http://localhost:8080/phaseCrew";
+
+		//Initialize new request object
+		let requestObject = new XMLHttpRequest();
+
+		//Set headers and open parameters
+		requestObject.open('POST', fullUrl, true);
+		requestObject.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+		let pidVal = document.getElementById("pid").value;
+		let cidVal = document.getElementById("cid").value;
+
+		//Make async
+		requestObject.addEventListener('load', function () {
+			if (requestObject.status >= 200 && requestObject.status < 400) {
+				console.log("hitDeleteButton");
+			}
+			else {
+				//Error making connection
+				console.log("error making connection");
+			}
+		});
+		requestObject.send("pid=" + pidVal + "&cid=" + cidVal);
+		location.reload(true);
+	});
+</script>
+
 
 		<br>
 		<h5>Browse existing relationships</h5>
@@ -78,7 +110,7 @@
 			return;
 		}
 
-		//submission.preventDefault();
+		submission.preventDefault();
 		let fullUrl = "http://localhost:8080/phaseCrew";
 
 		//Initialize new request object

@@ -5,8 +5,9 @@ const mysql = require('../dbcon.js');
 
 const getCrewsQuery = 'SELECT `Crews`.`crew_id`, `Crews`.`crew_name` FROM `Crews`;';
 const getPhasesQuery = 'SELECT `Phases`.`phase_id`, `Phases`.`phase_name` FROM `Phases`;';
-const getNamesQuery = 'SELECT `Phase_crew`.`relation_id`, `Phase_crew`.`phase_id`, `Phases`.`phase_name`, `Phase_crew`.`crew_id`, `Crews`.`crew_name`  FROM `Phase_crew` INNER JOIN `Phases` ON `Phases`.`phase_id` = `Phase_crew`.`crew_id` INNER JOIN Crews ON `Phase_crew`.`crew_id` = `Crews`.`crew_id`;';
+const getNamesQuery = 'SELECT `Phase_crew`.`relation_id`, `Phase_crew`.`phase_id`, `Phases`.`phase_name`, `Phase_crew`.`crew_id`, `Crews`.`crew_name`  FROM `Phase_crew` INNER JOIN `Phases` ON `Phases`.`phase_id` = `Phase_crew`.`phase_id` INNER JOIN Crews ON `Phase_crew`.`crew_id` = `Crews`.`crew_id` ORDER BY `Phase_crew`.`relation_id`;';
 const deleteQuery = 'DELETE FROM `Phase_crew` WHERE `relation_id` = ?;';
+const insertQuery = "INSERT INTO `Phase_crew` (`phase_id`, `crew_id`) VALUES(?,?);";
 
 function getAllData(res) {
 	let context = {};
@@ -60,8 +61,6 @@ function getAllData(res) {
 			}
 		}
 	});
-
-	
 };
 
 router.get('/phaseCrew', function (req, res, next) {
@@ -77,6 +76,20 @@ router.get('/phaseCrew', function (req, res, next) {
 		getAllData(res);
 	});
 
+});
+
+router.post('/phaseCrew', function (req, res, next) {
+	var pid = Number(req.body["pid"]);
+	var cid = Number(req.body["cid"]);
+	console.log("added new pc relation");
+	mysql.query(insertQuery, [pid, cid], (err, result) => {
+		if (err) {
+			next(err);
+			return;
+		}
+		console.log("no errors");
+		getAllData(res);
+	});
 });
 
 router.delete('/phaseCrew', function (req, res, next) {

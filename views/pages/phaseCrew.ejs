@@ -19,10 +19,18 @@
 		<br>
 		<h5>Add a new relationship</h5>
 		<form>
-		<label for="eid">Equipment ID</label><br>
-  <input type="text" id="eid" name="eid"><br>
+		<label for="pid">Phase ID</label><br>
+		<select id="pid" name="pid">
+		<% pidSelections.forEach(function(thing){ %>
+		<option value="<%= thing.phase_id %>"><%= thing.phase_name %></option>
+		<% }) %>
+		</select>><br>
   <label for="cid">Crew ID:</label><br>
-  <input type="text" id="cid" name="cid"><br><br>
+  <select id="cid" name="cid">
+		<% cidSelections.forEach(function(thing){ %>
+		<option value="<%= thing.crew_id %>"><%= thing.crew_name %></option>
+		<% }) %>
+		</select><br><br>
   <input type="submit" value="Submit"><br>
 </form>
 

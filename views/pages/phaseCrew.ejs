@@ -19,13 +19,13 @@
 		<br>
 		<h5>Add a new relationship</h5>
 		<form>
-		<label for="pid">Phase ID</label><br>
+		<label for="pid">Phase Name</label><br>
 		<select id="pid" name="pid">
 		<% pidSelections.forEach(function(thing){ %>
 		<option value="<%= thing.phase_id %>"><%= thing.phase_name %></option>
 		<% }) %>
 		</select>><br>
-  <label for="cid">Crew ID:</label><br>
+  <label for="cid">Crew Name:</label><br>
   <select id="cid" name="cid">
 		<% cidSelections.forEach(function(thing){ %>
 		<option value="<%= thing.crew_id %>"><%= thing.crew_name %></option>
@@ -36,20 +36,24 @@
 
 		<br>
 		<h5>Browse existing relationships</h5>
-		<table>
+		<table id="relationshipTable">
 		<thead>
 		<tr>
 			<th>Relation ID</th>
 			<th>Phase ID</th>
+			<th>Phase Name</th>
 			<th>Crew ID</th>
+			<th>Crew Name</th>
 			<th></th>
 		</thead>
 		<tbody>
 		<% results.forEach(function(thing){ %>
-        <tr>
+        <tr id="<%= thing.relation_id %>">
 			<td><%= thing.relation_id %></td>
 			<td><%= thing.phase_id %></td>
+			<td><%= thing.phase_name %></td>
 			<td><%= thing.crew_id %></td>
+			<td><%= thing.crew_name %></td>
 			<td>
 			<button type="button">Delete</button>
 			</td>
@@ -64,6 +68,45 @@
 		margin-left: -12px !important;
 		}
 	  </style>
+	  <script>
+	  document.getElementById("relationshipTable").addEventListener("click",
+	function deleteRel(submission) {
+
+		let target = event.target;
+
+		if (target.tagName != 'BUTTON') {
+			return;
+		}
+
+		//submission.preventDefault();
+		let fullUrl = "http://localhost:8080/phaseCrew";
+
+		//Initialize new request object
+		let requestObject = new XMLHttpRequest();
+
+		//Set headers and open parameters
+		requestObject.open('DELETE', fullUrl, true);
+		requestObject.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+		let deletionVal = target.parentNode.parentNode.id;
+
+		//Make async
+		requestObject.addEventListener('load', function () {
+			if (requestObject.status >= 200 && requestObject.status < 400) {
+				console.log("hitDeleteButton");
+			}
+			else {
+				//Error making connection
+				console.log("error making connection");
+			}
+		});
+		requestObject.query = deletionVal;
+		requestObject.send("val=" + deletionVal);
+		location.reload(true);
+	});
+	  </script>
+
+
     </div>
 </main>
 

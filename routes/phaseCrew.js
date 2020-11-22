@@ -5,6 +5,8 @@ const mysql = require('../dbcon.js');
 
 const getCrewsQuery = 'SELECT `Crews`.`crew_id`, `Crews`.`crew_name` FROM `Crews`;';
 const getPhasesQuery = 'SELECT `Phases`.`phase_id`, `Phases`.`phase_name` FROM `Phases`;';
+const getNamesQuery = 'SELECT `Phase_crew`.`relation_id`, `Phase_crew`.`phase_id`, `Phases`.`phase_name`, `Phase_crew`.`crew_id`, `Crews`.`crew_name`  FROM `Phase_crew` INNER JOIN `Phases` ON `Phases`.`phase_id` = `Phase_crew`.`crew_id` INNER JOIN Crews ON `Phase_crew`.`crew_id` = `Crews`.`crew_id`;';
+const deleteQuery = 'DELETE FROM `Phase_crew` WHERE `relation_id` = ?;';
 
 function getAllData(res) {
 	let context = {};
@@ -15,7 +17,7 @@ function getAllData(res) {
 	let secondQueryWorked = false;
 	let errorEncountered = false;
 
-	mysql.query(getAllQuery, (err, rows, fields) => {
+	mysql.query(getNamesQuery, (err, rows, fields) => {
 		if (err) {
 			next(err);
 			return;
@@ -77,4 +79,18 @@ router.get('/phaseCrew', function (req, res, next) {
 
 });
 
+router.delete('/phaseCrew', function (req, res, next) {
+	var val = req.body["val"];
+	console.log("deleting");
+	mysql.query(deleteQuery, [val], (err, result) => {
+		if (err) {
+			next(err);
+			return;
+		}
+		console.log("no errors on delete");
+		getAllData(res);
+	});
+});
+
 module.exports = router;
+

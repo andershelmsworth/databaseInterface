@@ -19,12 +19,53 @@
 		<form>
 			<label for="pname">Phase Name</label><br>
 			<input type="text" id="pname" name="pname"><br>
-			<label for="jobid">Job ID:</label><br>
-			<input type="text" id="jobid" name="jobid"><br><br>
-			<input type="submit" value="Submit"><br>
+			
+			<label for="jid">Job Name</label><br>
+		<select id="jid" name="jid">
+		<% jidSelections.forEach(function(thing){ %>
+		<option value="<%= thing.job_id %>"><%= thing.job_name %></option>
+		<% }) %>
+		</select><br><br>
+
+			<input type="submit" value="Submit" id="inputButton"><br>
 		</form>
 		<br>
 		
+		<script>
+	  document.getElementById("inputButton").addEventListener("click",
+	function addPhase(submission) {
+
+		submission.preventDefault();
+		let fullUrl = "http://localhost:8080/Phases";
+
+		//Initialize new request object
+		let requestObject = new XMLHttpRequest();
+
+		//Set headers and open parameters
+		requestObject.open('POST', fullUrl, true);
+		requestObject.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+		let pName = document.getElementById("pname").value;
+		let jidVal = document.getElementById("jid").value;
+
+		//Make async
+		requestObject.addEventListener('load', function () {
+			if (requestObject.status >= 200 && requestObject.status < 400) {
+				console.log("hitAddButton");
+			}
+			else {
+				//Error making connection
+				console.log("error making connection");
+			}
+		});
+		requestObject.send("pName=" + pName + "&jidVal=" + jidVal);
+		location.reload(true);
+	});
+</script>
+
+
+
+
 		
 		<h5>Browse existing phases</h5>
 		<table>
@@ -33,7 +74,7 @@
 			<th>Phase ID</th>
 			<th>Phase Name</th>
 			<th>Job ID</th>
-			<th></th>
+			<th>Job Name</th>
 		</thead>
 		<tbody>
 		<% results.forEach(function(thing){ %>
@@ -41,6 +82,7 @@
 			<td><%= thing.phase_id %></td>
 			<td><%= thing.phase_name %></td>
 			<td><%= thing.job_id %></td>
+			<td><%= thing.job_name %></td>
 		</tr>
       <% }) %>
 	  </tbody>

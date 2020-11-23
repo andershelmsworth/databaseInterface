@@ -16,11 +16,69 @@
     <h1>Crews</h1>
         <h3>View and add job crews below.</h3><br>
 		<h5>Add a new crew</h5>
-		<form>
+		<form id="crewAddForm">
 		<label for="cname">Crew Name</label><br>
   <input type="text" id="cname" name="cname"><br><br>
-  <input type="submit" value="Submit"><br>
+  <input type="submit" value="Submit" id="crewAddButton"><br>
 </form>
+		<script>
+			document.getElementById("crewAddButton").addEventListener("click", 
+			function addNewCrew(submission){
+				//submission.preventDefault();
+				let fullUrl = "http://localhost:8080/Crews";
+
+				//Initialize new request object
+				let requestObject = new XMLHttpRequest();
+
+				//requestObject.onload = function() {
+				//alert(requestObject.response); 
+				//};
+
+				//Set headers and open parameters
+				requestObject.open('POST', fullUrl, true);
+				requestObject.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+				let body = {"yes": 1};
+
+				let inputName = document.getElementById('cname').value;
+
+				//Error handling for blank input
+				if (inputName === "") {
+					submission.preventDefault();
+					if (document.getElementById('errorSpan')) {
+						let oldSpan = document.getElementById('errorSpan');
+						oldSpan.remove();
+					}
+
+					let outerDiv = document.getElementById("cname").parentNode;
+					let errorSpan = document.createElement("span");
+					outerDiv.appendChild(errorSpan);
+					errorSpan.textContent = "Name cannot be blank. Please try again.";
+					errorSpan.id = "errorSpan";
+					errorSpan.setAttribute('style', 'color: red');
+					return;
+				}
+
+				//Make async
+				requestObject.addEventListener('load', function () {
+					if (requestObject.status >= 200 && requestObject.status < 400) {
+						//Clear the body table
+						document.getElementById('cname').textContent = "";
+						console.log("submittedCname");
+						}
+
+					
+					else {
+						//Error making connection
+						console.log("error making connection");
+					}
+				});
+				console.log(JSON.stringify(body));
+				requestObject.query = body;
+				requestObject.send("name=" + inputName);
+				location.reload(true);
+			});
+		</script>
 		<br>
 		<h5>Browse existing crews</h5>
 		<table>

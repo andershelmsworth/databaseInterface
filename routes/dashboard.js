@@ -3,8 +3,27 @@ var router = express.Router();
 const getAllQuery = 'SELECT * FROM `Job_cost`';
 const mysql = require('../dbcon.js');
 
+const getEquipQuery = 'SELECT `equip_id`, `equip_name`, `equip_type`, `equip_weight`, `equip_fuel_type`, `equip_purchase_date` FROM `Equipment`;';
+const getJobsQuery = 'SELECT `job_id`, `job_name`, `company_id`, `location` FROM `Jobs`;';
+const getCrewsQuery = 'SELECT `Crews`.`crew_id`, `Crews`.`crew_name` FROM `Crews`;';
+const getPhasesQuery = 'SELECT `Phases`.`phase_id`, `Phases`.`phase_name` FROM `Phases`;';
+const getJCQuery = 'SELECT `date_time`, `equip_id`, `job_id`, `crew_id`, `phase_id`, `cost_type`, `hours`, `rate` FROM `Job_cost`;';
+const deleteQuery = 'DELETE FROM `Phase_crew` WHERE `relation_id` = ?;';
+const insertQuery = "INSERT INTO `Phase_crew` (`phase_id`, `crew_id`) VALUES(?,?);";
+
 function getAllData(res) {
-	mysql.query(getAllQuery, (err, rows, fields) => {
+	let context = {};
+	let eRows;
+	let jRows;
+	let cRows;
+	let pRows;
+	let initQueryWorked = false;
+	let secondQueryWorked = false;
+	let thirdQueryWorked = false;
+	let fourthQueryWorked = false;
+	let errorEncountered = false;
+
+	mysql.query(getJCQuery, (err, rows, fields) => {
 		if (err) {
 			next(err);
 			return;
@@ -13,13 +32,70 @@ function getAllData(res) {
 			//res.json({ rows: rows });
 			let context = {};
 			context = JSON.stringify(rows);
+			initQueryWorked = true;
+			jc = rows;
 
-			res.render('pages/Dashboard', {
-				results: rows
-			});
+			if (initQueryWorked) {
+				mysql.query(getEquipQuery, (err, erows, fields) => {
+					if (err) {
+						next(err);
+						return;
+					}
+					else {
+						secondQueryWorked = true;
+						eRows = erows;
+
+						if (secondQueryWorked) {
+							mysql.query(getJobsQuery, (err, jrows, fields) => {
+								if (err) {
+									next(err);
+									return;
+								}
+								else {
+									thirdQueryWorked = true;
+									jRows = jrows;
+
+									if (thirdQueryWorked) {
+										mysql.query(getCrewsQuery, (err, crows, fields) => {
+											if (err) {
+												next(err);
+												return;
+											}
+											else {
+												fourthQueryWorked = true;
+												cRows = crows;
+
+												if (fourthQueryWorked) {
+													mysql.query(getPhasesQuery, (err, prows, fields) => {
+														if (err) {
+															next(err);
+															return;
+														}
+														else {
+															pRows = prows;
+
+															res.render('pages/dashboard', {
+																results: jc,
+																eidSelections: eRows,
+																jidSelections: jRows,
+																cidSelections: cRows,
+																pidSelections: pRows,
+															});
+														}
+													});
+												}
+											}
+										});
+									}
+								}
+							});
+						}
+					}
+				});
+			}
 		}
 	});
-};
+}
 
 router.post('/filterDashboardForm', function (req, res, next) {
 	var filterQuery = 'SELECT * FROM `Job_cost` WHERE date_time != 0';
@@ -82,4 +158,34 @@ router.get('/dashboard', function (req, res, next) {
 
 });
 
+//Not working yet
+router.post('/dashboard', function (req, res, next) {
+	var pid = Number(req.body["pid"]);
+	var cid = Number(req.body["cid"]);
+	console.log("added new pc relation");
+	mysql.query(insertQuery, [pid, cid], (err, result) => {
+		if (err) {
+			next(err);
+			return;
+		}
+		console.log("no errors");
+		getAllData(res);
+	});
+});
+
+//Not working yet
+router.delete('/dashboard', function (req, res, next) {
+	var val = req.body["val"];
+	console.log("deleting");
+	mysql.query(deleteQuery, [val], (err, result) => {
+		if (err) {
+			next(err);
+			return;
+		}
+		console.log("no errors on delete");
+		getAllData(res);
+	});
+});
+
 module.exports = router;
+

@@ -33,21 +33,25 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr>
-			<td><input type="datetime-local" id="dtime2" name="dtime2"></td>
-			<td><input type="number" id="eid2" name="eid2"></td>
-			<td><input type="number" id="jid2" name="jid2"></td>
-			<td><input type="number" id="cid2" name="cid2"></td>
-			<td><input type="number" id="pid2" name="pid2"></td>
-			<td>
-				<select id="ct2" name="ct2">
-					<option value="ls2">Lump Sum</option>
-					<option value="cplus2">Cost Plus</option>
-				</select></td>
-			<td><input type="number" id="hours2" name="hours2"></td>
-			<td><input type="number" id="rate2" name="rate2"></td>
-			<td><input type="submit" value="Filter"></td>
-			<td><input type="submit" value="Reset Filters"></td>
+			<form id="filterDashboardForm" method="POST" action="/filterDashboardForm">
+				<tr>
+				<td><input type="datetime-local" id="dtime2" name="dtime2"></td>
+				<td><input type="number" id="eid2" name="eid2"></td>
+				<td><input type="number" id="jid2" name="jid2"></td>
+				<td><input type="number" id="cid2" name="cid2"></td>
+				<td><input type="number" id="pid2" name="pid2"></td>
+				<td>
+					<select id="ct2" name="ct2">
+						<option value="LS">Lump Sum</option>
+						<option value="C+">Cost Plus</option>
+					</select></td>
+				<td><input type="number" id="hours2" name="hours2"></td>
+				<td><input type="number" id="rate2" name="rate2"></td>
+					<td><input type="submit" value="Filter"></td>
+			</form>
+			<form id="resetDashboardForm" method="POST" action="/resetDashboardForm">
+				<td><input type="submit" value="Reset Filters"></td>
+			</form>
 			</tr>
 
 			<% jcCounter = 0; %>
@@ -156,7 +160,6 @@
     <style type="text/css">
 	  table {
 		border-collapse: separate;
-		border-spacing: 12px 7px;
 		margin-left: -12px !important;
 		}
 		#jcost input {

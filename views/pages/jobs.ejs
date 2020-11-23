@@ -16,11 +16,15 @@
         <h1>Jobs</h1>
         <h3>View and add jobs below.</h3><br>
         <h5>Add a new job</h5>
-        <form>
+        <form id="addJobForm" method="POST" action="/AddJob">
             <label for="jname">Job Name:</label><br>
             <input type="text" id="jname" name="jname"><br><br>
             <label for="cname">Company Name:</label><br>
-            <input type="text" id="cname" name="cname"><br><br>
+            <select type="text" id="cname" name="cname">
+            <% compResults.forEach(function(comp){ %>
+                <option value="<%= comp.company_id %>"><%= comp.company_name %></option>
+            <% }) %>
+            </select><br><br>
             <label for="jlocation">Job Location:</label><br>
             <input type="text" id="jlocation" name="jlocation"><br><br>
             <input type="submit" value="Submit"><br>
@@ -50,7 +54,6 @@
         <style type="text/css">
         table {
         border-collapse: separate;
-        border-spacing: 12px 7px;
         margin-left: -12px !important;
         }
         </style>    

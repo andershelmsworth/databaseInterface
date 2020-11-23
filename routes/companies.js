@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const getAllQuery = 'SELECT * FROM `Companies`';
+const insertQuery = 'INSERT INTO `Companies` (`company_name`, `budget`,`total_expenses`,`total_revenue`,`hq_location`) VALUES (?,?,?,?,?)'
 const mysql = require('../dbcon.js');
 
 function getAllData(res) {
@@ -20,6 +21,18 @@ function getAllData(res) {
 		}
 	});
 };
+
+router.post('/AddCompany', function (req, res, next) {
+    //adds company to database
+    var { cname, cbudget, texpenses, trevenue, hqlocation } = req.body;
+    mysql.query(insertQuery, [cname, cbudget, texpenses, trevenue, hqlocation], (err, rows, fields) => {
+        if (err) {
+            next(err);
+            return;
+        }
+		res.redirect('/companies');
+    });
+});
 
 router.get('/companies', function (req, res, next) {
 

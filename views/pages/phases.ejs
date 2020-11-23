@@ -1,105 +1,80 @@
-<!-- views/pages/index.ejs -->
+var express = require('express');
+var router = express.Router();
+const getAllQuery = 'SELECT * FROM `Phases`';
+const mysql = require('../dbcon.js');
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <%- include ('../partials/head') %>
-</head>
-<body class="container">
+const getJobsQuery = 'SELECT `Jobs`.`job_id`, `Jobs`.`job_name` FROM `Jobs`;';
+//const getPhasesQuery = 'SELECT `Phases`.`phase_id`, `Phases`.`phase_name` FROM `Phases`;';
+const getNamesQuery = 'SELECT `Phases`.`phase_id`, `Phases`.`phase_name`, `Phases`.`job_id`, `Jobs`.`job_name` FROM `Phases` INNER JOIN `Jobs` ON `Phases`.`job_id` = `Jobs`.`job_id`;';
+//const deleteQuery = 'DELETE FROM `Phase_crew` WHERE `relation_id` = ?;';
+const insertQuery = "INSERT INTO `Phases` (`phase_name`, `job_id`) VALUES(?,?);";
 
-<header>
-    <%- include ('../partials/dashboardHeader') %>
-</header>
+function getAllData(res) {
+	let context = {};
+	let jobRows;
+	let phaseRows;
+	let initQueryWorked = false;
+	let secondQueryWorked = false;
+	let errorEncountered = false;
 
-<main>
-    <div class="jumbotron">
-        <h1>Phases</h1>
-        <h3>View and add job phases below.</h3><br>
-		<h5>Add a new phase</h5>
-		<form>
-			<label for="pname">Phase Name</label><br>
-			<input type="text" id="pname" name="pname"><br>
-			
-			<label for="jid">Job Name</label><br>
-		<select id="jid" name="jid">
-		<% jidSelections.forEach(function(thing){ %>
-		<option value="<%= thing.job_id %>"><%= thing.job_name %></option>
-		<% }) %>
-		</select><br><br>
-
-			<input type="submit" value="Submit" id="inputButton"><br>
-		</form>
-		<br>
-		
-		<script>
-	  document.getElementById("inputButton").addEventListener("click",
-	function addPhase(submission) {
-
-		submission.preventDefault();
-		let fullUrl = "http://localhost:8080/Phases";
-
-		//Initialize new request object
-		let requestObject = new XMLHttpRequest();
-
-		//Set headers and open parameters
-		requestObject.open('POST', fullUrl, true);
-		requestObject.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-		let pName = document.getElementById("pname").value;
-		let jidVal = document.getElementById("jid").value;
-
-		//Make async
-		requestObject.addEventListener('load', function () {
-			if (requestObject.status >= 200 && requestObject.status < 400) {
-				console.log("hitAddButton");
-			}
-			else {
-				//Error making connection
-				console.log("error making connection");
-			}
-		});
-		requestObject.send("pName=" + pName + "&jidVal=" + jidVal);
-		location.reload(true);
-	});
-</script>
-
-
-
-
-		
-		<h5>Browse existing phases</h5>
-		<table>
-		<thead>
-		<tr>
-			<th>Phase ID</th>
-			<th>Phase Name</th>
-			<th>Job ID</th>
-			<th>Job Name</th>
-		</thead>
-		<tbody>
-		<% results.forEach(function(thing){ %>
-        <tr>
-			<td><%= thing.phase_id %></td>
-			<td><%= thing.phase_name %></td>
-			<td><%= thing.job_id %></td>
-			<td><%= thing.job_name %></td>
-		</tr>
-      <% }) %>
-	  </tbody>
-	  </table>
-	  <style type="text/css">
-	  table {
-		border-collapse: separate;
-		border-spacing: 12px 7px;
-		margin-left: -12px !important;
+	mysql.query(getNamesQuery, (err, rows, fields) => {
+		if (err) {
+			next(err);
+			return;
 		}
-	  </style>
-    </div>
-</main>
+		else {
+			//res.json({ rows: rows });
+			let context = {};
+			context = JSON.stringify(rows);
+			initQueryWorked = true;
+			phaseRows = rows;
 
-<footer>
-    <%- include ('../partials/footer') %>
-</footer>
+			if (initQueryWorked) {
+				mysql.query(getJobsQuery, (err, jobRows, fields) => {
+					if (err) {
+						next(err);
+						return;
+					}
+					else {
+						res.render('pages/Phases', {
+							results: phaseRows,
+							jidSelections: jobRows
+						});
 
-</body>
-</html>
+					}
+				});
+			}
+		}
+	});
+};
+
+router.get('/Phases', function (req, res, next) {
+
+	/*
+		Server processing code, e.g. DB calls, goes here
+	*/
+	mysql.query(getAllQuery, (err, rows, fields) => {
+		if (err) {
+			next(err);
+			return;
+		}
+		getAllData(res);
+	});
+
+});
+
+router.post('/Phases', function (req, res, next) {
+	var pname = req.body["pName"];
+	var jid = Number(req.body["jidVal"]);
+	console.log("added new phase relation");
+	mysql.query(insertQuery, [pname, jid], (err, result) => {
+		if (err) {
+			next(err);
+			return;
+		}
+		console.log("no errors");
+		getAllData(res);
+	});
+});
+
+module.exports = router;

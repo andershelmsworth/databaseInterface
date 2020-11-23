@@ -13,81 +13,47 @@
 
 <main>
     <div class="jumbotron">
-        <h1>Equipment:Crew M:M Table</h1>
+        <h1>Equip:Crew M:M Table</h1>
         <h3>Add, view, and delete relationships between equipment and crews below.</h3>
-
 		<br>
 		<h5>Add a new relationship</h5>
-		<form id="inputForm">
-		<label for="eid">Equipment Name</label><br>
-		<select id="eid" name="eid">
-		<% eidSelections.forEach(function(thing){ %>
-		<option value="<%= thing.equip_id %>"><%= thing.equip_name %></option>
-		<% }) %>
-		</select>><br>
-  <label for="cid">Crew Name:</label><br>
-  <select id="cid" name="cid">
-		<% cidSelections.forEach(function(thing){ %>
-		<option value="<%= thing.crew_id %>"><%= thing.crew_name %></option>
-		<% }) %>
-		</select><br><br>
-  <input type="submit" value="Submit" id="inputButton"><br>
-</form>
-<script>
-	  document.getElementById("inputButton").addEventListener("click",
-	function addRel(submission) {
-
-		submission.preventDefault();
-		let fullUrl = "http://localhost:8080/equipCrew";
-
-		//Initialize new request object
-		let requestObject = new XMLHttpRequest();
-
-		//Set headers and open parameters
-		requestObject.open('POST', fullUrl, true);
-		requestObject.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-		let eidVal = document.getElementById("eid").value;
-		let cidVal = document.getElementById("cid").value;
-
-		//Make async
-		requestObject.addEventListener('load', function () {
-			if (requestObject.status >= 200 && requestObject.status < 400) {
-				console.log("hitDeleteButton");
-			}
-			else {
-				//Error making connection
-				console.log("error making connection");
-			}
-		});
-		requestObject.send("eid=" + eidVal + "&cid=" + cidVal);
-		location.reload(true);
-	});
-</script>
-
+		<form id="addEquipCrewForm" method="POST" action="/AddEquipCrew">
+			<label for="eid">Equipment ID</label><br>
+			<select type="text" id="eid" name="eid">
+			<% equipResults.forEach(function(equip){ %>
+				<option value="<%= equip.equip_id %>"><%= equip.equip_name %></option>
+			<% }) %>
+			</select><br><br>
+			<label for="cid">Crew ID:</label><br>
+			<select type="text" id="cid" name="cid">
+			<% crewResults.forEach(function(crew){ %>
+				<option value="<%= crew.crew_id %>"><%= crew.crew_name %></option>
+			<% }) %>
+			</select><br><br>
+			<input type="submit" value="Submit"><br>
+		</form>
 
 		<br>
 		<h5>Browse existing relationships</h5>
-		<table id="relationshipTable">
+		<table>
 		<thead>
 		<tr>
 			<th>Relation ID</th>
 			<th>Equipment ID</th>
-			<th>Equipment Name</th>
 			<th>Crew ID</th>
-			<th>Crew Name</th>
 			<th></th>
 		</thead>
 		<tbody>
 		<% results.forEach(function(thing){ %>
-        <tr id="<%= thing.relation_id %>">
+        <tr>
 			<td><%= thing.relation_id %></td>
 			<td><%= thing.equip_id %></td>
-			<td><%= thing.equip_name %></td>
 			<td><%= thing.crew_id %></td>
-			<td><%= thing.crew_name %></td>
 			<td>
-			<button type="button">Delete</button>
+				<form id="deleteEquipCrewForm" method="POST" action="/deleteEquipCrew">
+					<input type="hidden" id="rid" name="rid" value="<%= thing.relation_id %>">
+					<button type="submit">Delete</button>
+				</form>		
 			</td>
 		</tr>
       <% }) %>
@@ -96,48 +62,9 @@
 	  <style type="text/css">
 	  table {
 		border-collapse: separate;
-		border-spacing: 12px 7px;
 		margin-left: -12px !important;
 		}
 	  </style>
-	  <script>
-	  document.getElementById("relationshipTable").addEventListener("click",
-	function deleteRel(submission) {
-
-		let target = event.target;
-
-		if (target.tagName != 'BUTTON') {
-			return;
-		}
-
-		submission.preventDefault();
-		let fullUrl = "http://localhost:8080/equipCrew";
-
-		//Initialize new request object
-		let requestObject = new XMLHttpRequest();
-
-		//Set headers and open parameters
-		requestObject.open('DELETE', fullUrl, true);
-		requestObject.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-		let deletionVal = target.parentNode.parentNode.id;
-
-		//Make async
-		requestObject.addEventListener('load', function () {
-			if (requestObject.status >= 200 && requestObject.status < 400) {
-				console.log("hitDeleteButton");
-			}
-			else {
-				//Error making connection
-				console.log("error making connection");
-			}
-		});
-		requestObject.query = deletionVal;
-		requestObject.send("val=" + deletionVal);
-		location.reload(true);
-	});
-	  </script>
-
     </div>
 </main>
 

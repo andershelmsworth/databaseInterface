@@ -17,13 +17,21 @@
         <h3>Add, view, and delete relationships between equipment and crews below.</h3>
 		<br>
 		<h5>Add a new relationship</h5>
-		<form>
-		<label for="eid">Equipment ID</label><br>
-  <input type="text" id="eid" name="eid"><br>
-  <label for="cid">Crew ID:</label><br>
-  <input type="text" id="cid" name="cid"><br><br>
-  <input type="submit" value="Submit"><br>
-</form>
+		<form id="addEquipCrewForm" method="POST" action="/AddEquipCrew">
+			<label for="eid">Equipment ID</label><br>
+			<select type="text" id="eid" name="eid">
+			<% equipResults.forEach(function(equip){ %>
+				<option value="<%= equip.equip_id %>"><%= equip.equip_name %></option>
+			<% }) %>
+			</select><br><br>
+			<label for="cid">Crew ID:</label><br>
+			<select type="text" id="cid" name="cid">
+			<% crewResults.forEach(function(crew){ %>
+				<option value="<%= crew.crew_id %>"><%= crew.crew_name %></option>
+			<% }) %>
+			</select><br><br>
+			<input type="submit" value="Submit"><br>
+		</form>
 
 		<br>
 		<h5>Browse existing relationships</h5>
@@ -42,7 +50,10 @@
 			<td><%= thing.equip_id %></td>
 			<td><%= thing.crew_id %></td>
 			<td>
-			<button type="button">Delete</button>
+				<form id="deleteEquipCrewForm" method="POST" action="/deleteEquipCrew">
+					<input type="hidden" id="rid" name="rid" value="<%= thing.relation_id %>">
+					<button type="submit">Delete</button>
+				</form>		
 			</td>
 		</tr>
       <% }) %>

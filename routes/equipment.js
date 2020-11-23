@@ -4,6 +4,7 @@ const getAllQuery = 'SELECT * FROM `Equipment`';
 const insertQuery = 'INSERT INTO `Equipment` (`equip_name`, `equip_type`, `equip_weight`, `equip_fuel_type`, `equip_purchase_date`) VALUES  (?,?,?,?,?)'
 const mysql = require('../dbcon.js');
 
+
 function getAllData(res) {
 	mysql.query(getAllQuery, (err, rows, fields) => {
 		if (err) {

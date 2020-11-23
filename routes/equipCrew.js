@@ -59,9 +59,9 @@ router.post('/AddEquipCrew', function (req, res, next) {
 });
 
 router.post('/deleteEquipCrew', function (req, res, next) {
-    //adds company to database
+    //adds equipCrew to database
 	var { rid } = req.body;
-    query = mysql.query(deleteQuery, [rid], (err, rows, fields) => {
+    mysql.query(deleteQuery, [rid], (err, rows, fields) => {
         if (err) {
             next(err);
             return;

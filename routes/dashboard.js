@@ -1,13 +1,14 @@
+
 var express = require('express');
 var router = express.Router();
 const getAllQuery = 'SELECT * FROM `Job_cost`';
 const mysql = require('../dbcon.js');
 
-const getEquipQuery = 'SELECT `equip_id`, `equip_name`, `equip_type`, `equip_weight`, `equip_fuel_type`, `equip_purchase_date` FROM `Equipment`;';
-const getJobsQuery = 'SELECT `job_id`, `job_name`, `company_id`, `location` FROM `Jobs`;';
-const getCrewsQuery = 'SELECT `Crews`.`crew_id`, `Crews`.`crew_name` FROM `Crews`;';
-const getPhasesQuery = 'SELECT `Phases`.`phase_id`, `Phases`.`phase_name` FROM `Phases`;';
-const getJCQuery = 'SELECT `date_time`, `equip_id`, `job_id`, `crew_id`, `phase_id`, `cost_type`, `hours`, `rate` FROM `Job_cost`;';
+const getEquipQuery = 'SELECT `equip_id`, `equip_name`, `equip_type`, `equip_weight`, `equip_fuel_type`, `equip_purchase_date` FROM `Equipment`';
+const getJobsQuery = 'SELECT `job_id`, `job_name` FROM `Jobs`';
+const getCrewsQuery = 'SELECT `crew_id`, `crew_name` FROM `Crews`;';
+const getPhasesQuery = 'SELECT `phase_id`, `phase_name` FROM `Phases`;';
+const getJCQuery = 'SELECT `date_time`, `equip_id`, `job_id`, `crew_id`, `phase_id`, `cost_type`, `hours`, `rate` FROM `Job_cost`';
 const deleteQuery = 'DELETE FROM `Phase_crew` WHERE `relation_id` = ?;';
 const insertQuery = "INSERT INTO `Phase_crew` (`phase_id`, `crew_id`) VALUES(?,?);";
 
@@ -48,7 +49,6 @@ function getAllData(res) {
 						if (secondQueryWorked) {
 							mysql.query(getJobsQuery, (err, jrows, fields) => {
 								if (err) {
-									next(err);
 									return;
 								}
 								else {
@@ -58,12 +58,13 @@ function getAllData(res) {
 									if (thirdQueryWorked) {
 										mysql.query(getCrewsQuery, (err, crows, fields) => {
 											if (err) {
-												next(err);
+												console.log(err)
 												return;
 											}
 											else {
 												fourthQueryWorked = true;
 												cRows = crows;
+												console.log(cRows);
 
 												if (fourthQueryWorked) {
 													mysql.query(getPhasesQuery, (err, prows, fields) => {
@@ -73,7 +74,6 @@ function getAllData(res) {
 														}
 														else {
 															pRows = prows;
-
 															res.render('pages/dashboard', {
 																results: jc,
 																eidSelections: eRows,
@@ -124,19 +124,69 @@ router.post('/filterDashboardForm', function (req, res, next) {
 	if (rate2 !== '') {
 		filterQuery = filterQuery + ' AND rate = ' + rate2;
 	}
-	query = mysql.query(filterQuery, (err, rows, fields) => {
+	query = mysql.query(filterQuery, (err, frows, fields) => {
         if (err) {
             next(err);
             return;
         }
 		let context = {};
-		context = JSON.stringify(rows);
+		context = JSON.stringify(frows);
+		mysql.query(getEquipQuery, (err, erows, fields) => {
+				if (err) {
+					next(err);
+					return;
+				}
+				else {
+					secondQueryWorked = true;
+					eRows = erows;
 
-		res.render('pages/Dashboard', {
-			results: rows
+					if (secondQueryWorked) {
+						mysql.query(getJobsQuery, (err, jrows, fields) => {
+							if (err) {
+								next(err);
+								return;
+							}
+							else {
+								thirdQueryWorked = true;
+								jRows = jrows;
+
+								if (thirdQueryWorked) {
+									mysql.query(getCrewsQuery, (err, crows, fields) => {
+										if (err) {
+											next(err);
+											return;
+										}
+										else {
+											fourthQueryWorked = true;
+											cRows = crows;
+
+											if (fourthQueryWorked) {
+												mysql.query(getPhasesQuery, (err, prows, fields) => {
+													if (err) {
+														next(err);
+														return;
+													}
+													else {
+														pRows = prows;
+														res.render('pages/dashboard', {
+															results: frows,
+															eidSelections: eRows,
+															jidSelections: jRows,
+															cidSelections: cRows,
+															pidSelections: pRows,
+														});
+													}
+												});
+											}
+										}
+									});
+								}
+							}
+						});
+					}
+				}
+			});
 		});
-	});
-	console.log(query)
 });
 
 router.post('/resetDashboardForm', function (req, res, next) {
@@ -188,4 +238,3 @@ router.delete('/dashboard', function (req, res, next) {
 });
 
 module.exports = router;
-

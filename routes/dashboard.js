@@ -11,6 +11,7 @@ const getPhasesQuery = 'SELECT `phase_id`, `phase_name` FROM `Phases`;';
 const getJCQuery = 'SELECT `date_time`, `equip_id`, `job_id`, `crew_id`, `phase_id`, `cost_type`, `hours`, `rate` FROM `Job_cost`';
 const deleteQuery = 'DELETE FROM `Phase_crew` WHERE `relation_id` = ?;';
 const insertQuery = "INSERT INTO `Phase_crew` (`phase_id`, `crew_id`) VALUES(?,?);";
+const insertJobCostQuery = 'INSERT INTO `Job_cost` (`date_time`, `equip_id`, `job_id`, crew_id, phase_id, cost_type, hours, rate) VALUES (?,?,?,?,?,?,?,?)'
 
 function getAllData(res) {
 	let context = {};
@@ -235,6 +236,18 @@ router.delete('/dashboard', function (req, res, next) {
 		console.log("no errors on delete");
 		getAllData(res);
 	});
+});
+
+router.post('/AddJobCost', function (req, res, next) {
+	//adds jobCost to database
+	var { dtime, eid, jid, cid, pid, ct, hours, rate } = req.body;
+    mysql.query(insertJobCostQuery, [dtime, eid, jid, cid, pid, ct, hours, rate], (err, rows, fields) => {
+        if (err) {
+            next(err);
+            return;
+        }
+		res.redirect('/dashboard');
+    });
 });
 
 module.exports = router;

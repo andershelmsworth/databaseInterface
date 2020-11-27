@@ -207,14 +207,14 @@
 		<label for="dtime">Date/Time</label><br>
   <input type="datetime-local" id="dtime" name="dtime" required><br><br>
   <label for="eid4">Equipment ID</label><br>
-  <select type="text" id="eid4" name="eid4">
+  <select type="text" id="eid4" name="eid4" required>
 						<% eidSelections.forEach(function(equips){ %>
 							<option value="<%= equips.equip_id %>"><%= equips.equip_name %></option>
 						<% }) %>
 					</select>
 
   <label for="jid4">Job ID</label><br>
-  <select type="text" id="jid4" name="jid4">
+  <select type="text" id="jid4" name="jid4" required>
 						<% jidSelections.forEach(function(jobs){ %>
 							<option value="<%= jobs.job_id %>"><%= jobs.job_name %></option>
 						<% }) %>
@@ -222,7 +222,7 @@
   <br>
 
   <label for="cid4">Crew ID</label><br>
-  <select type="text" id="cid4" name="cid4">
+  <select type="text" id="cid4" name="cid4" required>
 						<% cidSelections.forEach(function(crews){ %>
 							<option value="<%= crews.crew_id %>"><%= crews.crew_name %></option>
 						<% }) %>
@@ -230,7 +230,7 @@
   <br>
 
   <label for="pid4">Phase ID</label><br>
-  <select type="text" id="pid4" name="pid4">
+  <select type="text" id="pid4" name="pid4" required>
 						<% pidSelections.forEach(function(phases){ %>
 							<option value="<%= phases.phase_id %>"><%= phases.phase_name %></option>
 						<% }) %>

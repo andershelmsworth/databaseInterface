@@ -12,7 +12,7 @@ const getJCQuery = 'SELECT `job_cost_id`,  CAST(CONVERT(`date_time`, DATE) AS VA
 const deleteQuery = 'DELETE FROM `Job_cost` WHERE `job_cost_id` = ?;';
 const insertQuery = "INSERT INTO `Phase_crew` (`phase_id`, `crew_id`) VALUES(?,?);";
 const insertJobCostQuery = 'INSERT INTO `Job_cost` (`date_time`, `equip_id`, `job_id`, crew_id, phase_id, cost_type, hours, rate) VALUES (?,?,?,?,?,?,?,?)'
-const updateQuery = 'UPDATE`Job_cost` SET `date_time` = ?, `equip_id` = ?, `job_id` = ?, `crew_id` = ?, `phase_id` = ?, `cost_type` = ?, `hours` = ?, `rate` = ? WHERE`job_cost_id` = ?;';
+const updateQuery = 'UPDATE `Job_cost` SET `date_time` = ?, `equip_id` = ?, `job_id` = ?, `crew_id` = ?, `phase_id` = ?, `cost_type` = ?, `hours` = ?, `rate` = ? WHERE `job_cost_id` = ?;';
 
 function getAllData(res) {
 	let context = {};

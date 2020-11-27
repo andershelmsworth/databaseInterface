@@ -101,11 +101,6 @@
 								<% } %>
 
 							<% }) %>
-								<% if (row.equip_id === null){ %>
-									<option value="NULL" selected="selected">NULL</option>
-								<% } else { %>  
-									<option value="NULL">NULL</option>
-								<% } %>
 						</select>
 					</td>
 					<td>
@@ -117,11 +112,6 @@
 								<option value="<%= jobs.job_id %>"><%= jobs.job_name %></option>
 							<% } %>
 						<% }) %>
-						<% if (row.job_id === null){ %>
-									<option value="NULL" selected="selected">NULL</option>
-								<% } else { %>  
-									<option value="NULL">NULL</option>
-								<% } %>
 						</select>
 					</td>
 					<td>
@@ -134,11 +124,6 @@
 							<% } %>
 						<% }) %>
 
-						<% if (row.crew_id === null){ %>
-									<option value="NULL" selected="selected">NULL</option>
-								<% } else { %>  
-									<option value="NULL">NULL</option>
-								<% } %>
 						</select>
 					</td>
 					
@@ -152,11 +137,6 @@
 							<% } %>
 						<% }) %>
 
-						<% if (row.phase_id === null){ %>
-									<option value="NULL" selected="selected">NULL</option>
-								<% } else { %>  
-									<option value="NULL">NULL</option>
-								<% } %>
 						</select>
 					</td>
 					<td>
@@ -228,7 +208,6 @@
   <input type="datetime-local" id="dtime" name="dtime" required><br><br>
   <label for="eid4">Equipment ID</label><br>
   <select type="text" id="eid4" name="eid4">
-						<option value="NULL">No Selection</option>	
 						<% eidSelections.forEach(function(equips){ %>
 							<option value="<%= equips.equip_id %>"><%= equips.equip_name %></option>
 						<% }) %>
@@ -236,7 +215,6 @@
 
   <label for="jid4">Job ID</label><br>
   <select type="text" id="jid4" name="jid4">
-						<option value="NULL">No Selection</option>
 						<% jidSelections.forEach(function(jobs){ %>
 							<option value="<%= jobs.job_id %>"><%= jobs.job_name %></option>
 						<% }) %>
@@ -245,7 +223,6 @@
 
   <label for="cid4">Crew ID</label><br>
   <select type="text" id="cid4" name="cid4">
-						<option value="NULL">No Selection</option>	
 						<% cidSelections.forEach(function(crews){ %>
 							<option value="<%= crews.crew_id %>"><%= crews.crew_name %></option>
 						<% }) %>

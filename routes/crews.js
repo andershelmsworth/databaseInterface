@@ -16,7 +16,7 @@ app.use(CORS());
 
 //SQL queries
 const insertQuery = "INSERT INTO `Crews` (`crew_name`) VALUES(?);";
-const getAllQuery = 'SELECT * FROM `Crews`';
+const getAllQuery = 'SELECT `crew_id`, `crew_name` from `Crews`';
 
 function getAllData(res) {
 	mysql.query(getAllQuery, (err, rows, fields) => {

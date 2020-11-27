@@ -17,6 +17,7 @@
         <h1>Financials Dashboard</h1><br>
         <h3>View, edit, and add Job Cost information below.</h3><br>
 		<h5>Use the search boxes below to filter expenses, or scroll to the bottom to add a new expense.</h5>
+		<h9>Note: the date filter will find all expenses after the selected date.</h9>
 	<br>
 	<table id="jcost">
 		<thead>
@@ -89,7 +90,7 @@
 				<form method="POST" action="/jcUpdate">
 				<tr id="<%= row.job_cost_id %>">
 					<td style="display:none !important;" name="jid"><%= row.job_cost_id %></td>
-					<td name="time"><input name="time" type="datetime-local" value="<%= row.date_time %>" disabled></td>
+					<td name="time"><input name="time" type="datetime-local" value="<%= row.caldate %>T<%= row.time %>" disabled></td>
 					<td>
 						<select name="eid" value="<%= row.equip_id %>" disabled>
 							<% eidSelections.forEach(function(equips){ %>

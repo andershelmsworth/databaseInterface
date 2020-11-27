@@ -3,8 +3,8 @@ var router = express.Router();
 const getAllQuery = 'SELECT * FROM `Phase_crew`';
 const mysql = require('../dbcon.js');
 
-const getCrewsQuery = 'SELECT `Crews`.`crew_id`, `Crews`.`crew_name` FROM `Crews`;';
-const getPhasesQuery = 'SELECT `Phases`.`phase_id`, `Phases`.`phase_name` FROM `Phases`;';
+const getCrewsQuery = 'SELECT `crew_id`, `crew_name` FROM `Crews`;';
+const getPhasesQuery = 'SELECT `phase_id`, `phase_name` FROM `Phases`;';
 const getNamesQuery = 'SELECT `Phase_crew`.`relation_id`, `Phase_crew`.`phase_id`, `Phases`.`phase_name`, `Phase_crew`.`crew_id`, `Crews`.`crew_name`  FROM `Phase_crew` INNER JOIN `Phases` ON `Phases`.`phase_id` = `Phase_crew`.`phase_id` INNER JOIN Crews ON `Phase_crew`.`crew_id` = `Crews`.`crew_id` ORDER BY `Phase_crew`.`relation_id`;';
 const deleteQuery = 'DELETE FROM `Phase_crew` WHERE `relation_id` = ?;';
 const insertQuery = "INSERT INTO `Phase_crew` (`phase_id`, `crew_id`) VALUES(?,?);";

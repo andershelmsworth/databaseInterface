@@ -8,7 +8,7 @@ const getEquipQuery = 'SELECT `equip_id`, `equip_name`, `equip_type`, `equip_wei
 const getJobsQuery = 'SELECT `job_id`, `job_name` FROM `Jobs`';
 const getCrewsQuery = 'SELECT `crew_id`, `crew_name` FROM `Crews`;';
 const getPhasesQuery = 'SELECT `phase_id`, `phase_name` FROM `Phases`;';
-const getJCQuery = 'SELECT `job_cost_id`, `date_time`, `equip_id`, `job_id`, `crew_id`, `phase_id`, `cost_type`, `hours`, `rate` FROM `Job_cost`';
+const getJCQuery = 'SELECT `job_cost_id`,  CAST(CONVERT(`date_time`, DATE) AS VARCHAR(10)) AS `caldate`, CONVERT(`date_time`, time) AS `time`, `equip_id`, `job_id`, `crew_id`, `phase_id`, `cost_type`, `hours`, `rate` FROM `Job_cost`;';
 const deleteQuery = 'DELETE FROM `Job_cost` WHERE `job_cost_id` = ?;';
 const insertQuery = "INSERT INTO `Phase_crew` (`phase_id`, `crew_id`) VALUES(?,?);";
 const insertJobCostQuery = 'INSERT INTO `Job_cost` (`date_time`, `equip_id`, `job_id`, crew_id, phase_id, cost_type, hours, rate) VALUES (?,?,?,?,?,?,?,?)'
@@ -37,6 +37,7 @@ function getAllData(res) {
 			context = JSON.stringify(rows);
 			initQueryWorked = true;
 			jc = rows;
+
 
 			if (initQueryWorked) {
 				mysql.query(getEquipQuery, (err, erows, fields) => {
@@ -103,7 +104,7 @@ router.post('/filterDashboardForm', function (req, res, next) {
 	var filterQuery = 'SELECT * FROM `Job_cost` WHERE date_time != 0';
 	var { dtime2, eid2, jid2, cid2, pid2, ct2, hours2, rate2 } = req.body;
 	if (dtime2 !== '') {
-		filterQuery = filterQuery + ' AND date_time = ' + dtime2;
+		filterQuery = filterQuery + ' AND date_time >= ' + '"' + dtime2[0] + dtime2[1] + dtime2[2] + dtime2[3] + '-' + dtime2[5] + dtime2[6] + '-' + dtime2[8] + dtime2[9] + ' ' + dtime2[11] + dtime2[12] + ':' + dtime2[14] + dtime2[15] + ':00' + '"';
 	}
 	if (eid2 !== '') {
 		filterQuery = filterQuery + ' AND equip_id = ' + eid2;
@@ -210,22 +211,6 @@ router.get('/dashboard', function (req, res, next) {
 
 });
 
-//Not working yet
-router.post('/dashboard', function (req, res, next) {
-	var pid = Number(req.body["pid"]);
-	var cid = Number(req.body["cid"]);
-	console.log("added new pc relation");
-	mysql.query(insertQuery, [pid, cid], (err, result) => {
-		if (err) {
-			next(err);
-			return;
-		}
-		console.log("no errors");
-		getAllData(res);
-	});
-});
-
-//Not working yet
 router.post('/deleteJC', function (req, res, next) {
 	var { jcid } = req.body;
 	console.log("deleting jcid:", jcid);

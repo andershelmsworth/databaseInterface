@@ -8,10 +8,11 @@ const getEquipQuery = 'SELECT `equip_id`, `equip_name`, `equip_type`, `equip_wei
 const getJobsQuery = 'SELECT `job_id`, `job_name` FROM `Jobs`';
 const getCrewsQuery = 'SELECT `crew_id`, `crew_name` FROM `Crews`;';
 const getPhasesQuery = 'SELECT `phase_id`, `phase_name` FROM `Phases`;';
-const getJCQuery = 'SELECT `date_time`, `equip_id`, `job_id`, `crew_id`, `phase_id`, `cost_type`, `hours`, `rate` FROM `Job_cost`';
-const deleteQuery = 'DELETE FROM `Phase_crew` WHERE `relation_id` = ?;';
+const getJCQuery = 'SELECT `job_cost_id`, `date_time`, `equip_id`, `job_id`, `crew_id`, `phase_id`, `cost_type`, `hours`, `rate` FROM `Job_cost`';
+const deleteQuery = 'DELETE FROM `Job_cost` WHERE `job_cost_id` = ?;';
 const insertQuery = "INSERT INTO `Phase_crew` (`phase_id`, `crew_id`) VALUES(?,?);";
 const insertJobCostQuery = 'INSERT INTO `Job_cost` (`date_time`, `equip_id`, `job_id`, crew_id, phase_id, cost_type, hours, rate) VALUES (?,?,?,?,?,?,?,?)'
+const updateQuery = 'UPDATE`Job_cost` SET `date_time` = ?, `equip_id` = ?, `job_id` = ?, `crew_id` = ?, `phase_id` = ?, `cost_type` = ?, `hours` = ?, `rate` = ? WHERE`job_cost_id` = ?;';
 
 function getAllData(res) {
 	let context = {};
@@ -225,15 +226,28 @@ router.post('/dashboard', function (req, res, next) {
 });
 
 //Not working yet
-router.delete('/dashboard', function (req, res, next) {
-	var val = req.body["val"];
-	console.log("deleting");
-	mysql.query(deleteQuery, [val], (err, result) => {
+router.post('/deleteJC', function (req, res, next) {
+	var { jcid } = req.body;
+	console.log("deleting jcid:", jcid);
+	mysql.query(deleteQuery, [jcid], (err, result) => {
 		if (err) {
 			next(err);
 			return;
 		}
-		console.log("no errors on delete");
+		console.log("nope errors on delete");
+		getAllData(res);
+	});
+});
+
+router.post('/jcUpdate', function (req, res, next) {
+	var { time, eid, jid, cid, pid, ct, hours, rt, jcid } = req.body;
+	console.log("updating jcid:", jcid);
+	mysql.query(updateQuery, [time, eid, jid, cid, pid, ct, hours, rt, jcid], (err, result) => {
+		if (err) {
+			next(err);
+			return;
+		}
+		console.log("nope errors on update");
 		getAllData(res);
 	});
 });

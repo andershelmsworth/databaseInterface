@@ -86,11 +86,12 @@
 
 			<% jcCounter = 0; %>
 			<% results.forEach(function(row){ %>
-				<tr id="jc<%= jcCounter %>">
-					<td style="display:none !important;"><%= row.job_cost_id %></td>
-					<td><input type="datetime-local" value="<%= row.date_time %>" disabled></td>
+				<form method="POST" action="/jcUpdate">
+				<tr id="<%= row.job_cost_id %>">
+					<td style="display:none !important;" name="jid"><%= row.job_cost_id %></td>
+					<td name="time"><input name="time" type="datetime-local" value="<%= row.date_time %>" disabled></td>
 					<td>
-						<select name="eid" value="<%= row.equip_id %>">
+						<select name="eid" value="<%= row.equip_id %>" disabled>
 							<% eidSelections.forEach(function(equips){ %>
 								<% if (row.equip_id == equips.equip_id){ %>
 									<option value="<%= equips.equip_id %>" selected="selected"><%= equips.equip_name %></option>
@@ -101,7 +102,7 @@
 						</select>
 					</td>
 					<td>
-						<select name="jid" id="jid" value="<%= row.job_id %>">
+						<select name="jid" id="jid" value="<%= row.job_id %>" disabled>
 						<% jidSelections.forEach(function(jobs){ %>
 							<% if (row.job_id == jobs.job_id){ %>
 								<option value="<%= jobs.job_id %>" selected="selected"><%= jobs.job_name %></option>
@@ -112,7 +113,7 @@
 						</select>
 					</td>
 					<td>
-					<select name="cid" id="cid" value="<%= row.crew_id %>">
+					<select name="cid" id="cid" value="<%= row.crew_id %>" disabled>
 						<% cidSelections.forEach(function(crews){ %>
 							<% if (row.crew_id == crews.crew_id){ %>
 								<option value="<%= crews.crew_id %>" selected="selected"><%= crews.crew_name %></option>
@@ -124,7 +125,7 @@
 					</td>
 					
 					<td>
-					<select name="pid" id="pid">
+					<select name="pid" id="pid" disabled>
 						<% pidSelections.forEach(function(phases){ %>
 							<% if (row.phase_id == phases.phase_id){ %>
 								<option value="<%= phases.phase_id %>" selected="selected"><%= phases.phase_name %></option>
@@ -136,7 +137,7 @@
 					</td>
 					<td>
 					
-					<select name="ct" id="ct" value="<%= row.cost_type %>">
+					<select name="ct" id="ct" value="<%= row.cost_type %>" disabled>
 							<% if (row.cost_type == "C+"){ %>
 								<option value="C+" selected="selected">C+</option>
 								<option value="LS">LS</option>
@@ -147,16 +148,21 @@
 						</select>
 					</td>
 					<td>
-					<input type="number" name="ct" value="<%= row.hours %>">
+					<input type="number" name="hours" value="<%= row.hours %>" disabled>
 					</td>
-					<td><input type="number" name="rt" value="<%= row.rate %>"></td>
+					<td><input type="number" name="rt" value="<%= row.rate %>" disabled></td>
 					<td>
-					<button type="button" name="editButton">Edit</button>
+					<button type="button" name="editButton" style="background-color: #007bff !important; color: #FFFFFF !important; border-radius: 4px;">Edit</button>
+					<button type="submit" name="updateButton" style="display:none !important">Update</button>
 					</td>
 					<td>
-					<button type="button" name="deleteButton">Delete</button>
+					<form id="deleteJCForm" method="POST" action="/deleteJC">
+					<input type="hidden" name="jcid" value="<%= row.job_cost_id %>">
+					<button type="submit" style="background-color: #e60000 !important; color: #FFFFFF !important; border-radius: 4px;">Delete</button>
+					</form>
 					</td>
 				</tr>
+				</form>
 		<% jcCounter = jcCounter + 1; %>
       <% }) %>
 
@@ -164,7 +170,32 @@
 	</table>
 	<br>
 	<br>
-	
+	<script>
+	  document.getElementById("jcost").addEventListener("click",
+	function enableRow(submission) {
+
+		let target = event.target;
+
+		if (target.name != 'editButton') {
+			return;
+		}
+    else {
+    	console.log("hit edit button");
+		parentTr = target.parentNode.parentNode;
+
+		for (let i = 0; i < parentTr.children.length; i++) {
+			let chosenRow = parentTr.children[i].children[0];
+			if (chosenRow !== undefined) {
+				chosenRow.removeAttribute("disabled");
+			}
+		}
+		let targetParent = target.parentNode;
+		targetParent.children[1].setAttribute("style", "background-color: #45a049 !important; color: #FFFFFF !important; border-radius: 4px;");
+		target.setAttribute("style", "display:none !important;");
+    }
+    });
+
+		</script>
 	<table><tbody><tr><td>
     <span id="add">
     <h5>Add a new expense item</h5>

@@ -9,18 +9,6 @@ const getNamesQuery = 'SELECT `Phase_crew`.`relation_id`, `Phase_crew`.`phase_id
 const deleteQuery = 'DELETE FROM `Phase_crew` WHERE `relation_id` = ?;';
 const insertQuery = "INSERT INTO `Phase_crew` (`phase_id`, `crew_id`) VALUES(?,?);";
 
-var CORS = require('cors');
-var app = express();
-
-var corsOptions = {
-	origin: "localhost:8080",
-	optionsSuccessStatus: 200,
-	allowedHeaders: "Content-Type,Authorization"// some legacy browsers (IE11, various SmartTVs) choke on 204
-}
-
-app.use(CORS(corsOptions));
-app.options('/deleteJC', CORS(corsOptions));
-
 function getAllData(res) {
 	let context = {};
 	let pcRows;
@@ -90,7 +78,7 @@ router.get('/phaseCrew', function (req, res, next) {
 
 });
 
-router.post('/phaseCrew', function (req, res, next) {
+router.post('/addPC', function (req, res, next) {
 	var pid = Number(req.body["pid"]);
 	var cid = Number(req.body["cid"]);
 	console.log("added new pc relation");
@@ -104,10 +92,10 @@ router.post('/phaseCrew', function (req, res, next) {
 	});
 });
 
-router.delete('/phaseCrew', function (req, res, next) {
-	var val = req.body["val"];
+router.post('/deletePC', function (req, res, next) {
+	var rid = req.body["rid"];
 	console.log("deleting");
-	mysql.query(deleteQuery, [val], (err, result) => {
+	mysql.query(deleteQuery, [rid], (err, result) => {
 		if (err) {
 			next(err);
 			return;

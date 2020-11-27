@@ -90,7 +90,7 @@
 				<form method="POST" action="/jcUpdate">
 				<tr id="<%= row.job_cost_id %>">
 					<td style="display:none !important;" name="jid"><%= row.job_cost_id %></td>
-					<td name="time"><input name="time" type="datetime-local" value="<%= row.caldate %>T<%= row.time %>" disabled></td>
+					<td name="time"><input name="time" type="datetime-local" value="<%= row.caldate %>T<%= row.time %>" disabled required></td>
 					<td>
 						<select name="eid" value="<%= row.equip_id %>" disabled>
 							<% eidSelections.forEach(function(equips){ %>
@@ -99,6 +99,7 @@
 								<% } else { %>  
 									<option value="<%= equips.equip_id %>"><%= equips.equip_name %></option>
 								<% } %>
+
 							<% }) %>
 						</select>
 					</td>
@@ -122,6 +123,7 @@
 								<option value="<%= crews.crew_id %>"><%= crews.crew_name %></option>
 							<% } %>
 						<% }) %>
+
 						</select>
 					</td>
 					
@@ -134,11 +136,12 @@
 								<option value="<%= phases.phase_id %>"><%= phases.phase_name %></option>
 							<% } %>
 						<% }) %>
+
 						</select>
 					</td>
 					<td>
 					
-					<select name="ct" id="ct" value="<%= row.cost_type %>" disabled>
+					<select name="ct" id="ct" value="<%= row.cost_type %>" disabled required>
 							<% if (row.cost_type == "C+"){ %>
 								<option value="C+" selected="selected">C+</option>
 								<option value="LS">LS</option>
@@ -149,9 +152,9 @@
 						</select>
 					</td>
 					<td>
-					<input type="number" name="hours" value="<%= row.hours %>" disabled>
+					<input type="number" name="hours" value="<%= row.hours %>" disabled required>
 					</td>
-					<td><input type="number" name="rt" value="<%= row.rate %>" disabled></td>
+					<td><input type="number" name="rt" value="<%= row.rate %>" disabled required></td>
 					<td>
 					<button type="button" name="editButton" style="background-color: #007bff !important; color: #FFFFFF !important; border-radius: 4px;">Edit</button>
 					<button type="submit" name="updateButton" style="display:none !important">Update</button>
@@ -202,24 +205,47 @@
     <h5>Add a new expense item</h5>
 	<form id="addJobCostForm" method="POST" action="/AddJobCost">
 		<label for="dtime">Date/Time</label><br>
-  <input type="datetime-local" id="dtime" name="dtime"><br><br>
-  <label for="eid">Equipment ID</label><br>
-  <input type="number" id="eid" name="eid"><br>
-  <label for="jid">Job ID</label><br>
-  <input type="number" id="jid" name="jid"><br>
-  <label for="cid">phase ID</label><br>
-  <input type="number" id="cid" name="cid"><br>
-  <label for="pid">Phase ID</label><br>
-  <input type="number" id="pid" name="pid"><br>
+  <input type="datetime-local" id="dtime" name="dtime" required><br><br>
+  <label for="eid4">Equipment ID</label><br>
+  <select type="text" id="eid4" name="eid4" required>
+						<% eidSelections.forEach(function(equips){ %>
+							<option value="<%= equips.equip_id %>"><%= equips.equip_name %></option>
+						<% }) %>
+					</select>
+
+  <label for="jid4">Job ID</label><br>
+  <select type="text" id="jid4" name="jid4" required>
+						<% jidSelections.forEach(function(jobs){ %>
+							<option value="<%= jobs.job_id %>"><%= jobs.job_name %></option>
+						<% }) %>
+					</select>
+  <br>
+
+  <label for="cid4">Crew ID</label><br>
+  <select type="text" id="cid4" name="cid4" required>
+						<% cidSelections.forEach(function(crews){ %>
+							<option value="<%= crews.crew_id %>"><%= crews.crew_name %></option>
+						<% }) %>
+					</select>
+  <br>
+
+  <label for="pid4">Phase ID</label><br>
+  <select type="text" id="pid4" name="pid4" required>
+						<% pidSelections.forEach(function(phases){ %>
+							<option value="<%= phases.phase_id %>"><%= phases.phase_name %></option>
+						<% }) %>
+					</select>
+  <br>
+
   <label for="ct">Cost Type</label><br>
-<select id="ct" name="ct">
+<select id="ct" name="ct" required>
   <option value="ls">Lump Sum</option>
   <option value="cplus">Cost Plus</option>
 </select><br>
 <label for="hours">Hours</label><br>
-  <input type="number" id="hours" name="hours"><br>
+  <input type="number" id="hours" name="hours" required><br>
   <label for="rate">Rate</label><br>
-  <input type="number" id="rate" name="rate"><br>
+  <input type="number" id="rate" name="rate" required><br>
   <input type="submit" value="Submit"><br>
 </form>
 		<br>

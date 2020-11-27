@@ -18,7 +18,7 @@
 
 		<br>
 		<h5>Add a new relationship</h5>
-		<form id="inputForm">
+		<form id="inputForm" action="/addPC" method="POST">
 		<label for="pid">Phase Name</label><br>
 		<select id="pid" name="pid">
 		<% pidSelections.forEach(function(thing){ %>
@@ -31,41 +31,12 @@
 		<option value="<%= thing.crew_id %>"><%= thing.crew_name %></option>
 		<% }) %>
 		</select><br><br>
-  <input type="submit" value="Submit" id="inputButton"><br>
+  <input type="submit" value="Submit">
+				</form>
+  
+  
+  <br>
 </form>
-<script>
-	  document.getElementById("inputButton").addEventListener("click",
-	function addRel(submission) {
-
-		submission.preventDefault();
-		let fullUrl = "http://flip3.engr.oregonstate.edu:3131/phaseCrew";
-
-		//Initialize new request object
-		let requestObject = new XMLHttpRequest();
-
-		//Set headers and open parameters
-		requestObject.open('POST', fullUrl, true);
-		requestObject.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-		let pidVal = document.getElementById("pid").value;
-		let cidVal = document.getElementById("cid").value;
-
-		//Make async
-		requestObject.addEventListener('load', function () {
-			if (requestObject.status >= 200 && requestObject.status < 400) {
-				console.log("hitDeleteButton");
-			}
-			else {
-				//Error making connection
-				console.log("error making connection");
-			}
-		});
-		requestObject.send("pid=" + pidVal + "&cid=" + cidVal);
-		location.reload(true);
-	});
-</script>
-
-
 		<br>
 		<h5>Browse existing relationships</h5>
 		<table id="relationshipTable">
@@ -87,7 +58,12 @@
 			<td><%= thing.crew_id %></td>
 			<td><%= thing.crew_name %></td>
 			<td>
-			<button type="button" style="background-color: #e60000 !important; color: #FFFFFF !important; border-radius: 4px;">Delete</button>
+
+			<form id="deletePCform" method="POST" action="/deletePC">
+					<input type="hidden" id="rid" name="rid" value="<%= thing.relation_id %>">
+					<button type="submit" style="background-color: #e60000 !important; color: #FFFFFF !important; border-radius: 4px;">Delete</button>
+				</form>
+
 			</td>
 		</tr>
       <% }) %>
@@ -99,45 +75,6 @@
 		margin-left: -12px !important;
 		}
 	  </style>
-	  <script>
-	  document.getElementById("relationshipTable").addEventListener("click",
-	function deleteRel(submission) {
-
-		let target = event.target;
-
-		if (target.tagName != 'BUTTON') {
-			return;
-		}
-
-		submission.preventDefault();
-		let fullUrl = "http://flip3.engr.oregonstate.edu:3131/phaseCrew";
-
-		//Initialize new request object
-		let requestObject = new XMLHttpRequest();
-
-		//Set headers and open parameters
-		requestObject.open('DELETE', fullUrl, true);
-		requestObject.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-		let deletionVal = target.parentNode.parentNode.id;
-
-		//Make async
-		requestObject.addEventListener('load', function () {
-			if (requestObject.status >= 200 && requestObject.status < 400) {
-				console.log("hitDeleteButton");
-			}
-			else {
-				//Error making connection
-				console.log("error making connection");
-			}
-		});
-		requestObject.query = deletionVal;
-		requestObject.send("val=" + deletionVal);
-		location.reload(true);
-	});
-	  </script>
-
-
     </div>
 </main>
 

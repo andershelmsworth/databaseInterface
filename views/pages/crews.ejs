@@ -42,23 +42,6 @@
 
 				let inputName = document.getElementById('cname').value;
 
-				//Error handling for blank input
-				if (inputName === "") {
-					submission.preventDefault();
-					if (document.getElementById('errorSpan')) {
-						let oldSpan = document.getElementById('errorSpan');
-						oldSpan.remove();
-					}
-
-					let outerDiv = document.getElementById("cname").parentNode;
-					let errorSpan = document.createElement("span");
-					outerDiv.appendChild(errorSpan);
-					errorSpan.textContent = "Name cannot be blank. Please try again.";
-					errorSpan.id = "errorSpan";
-					errorSpan.setAttribute('style', 'color: red');
-					return;
-				}
-
 				//Make async
 				requestObject.addEventListener('load', function () {
 					if (requestObject.status >= 200 && requestObject.status < 400) {

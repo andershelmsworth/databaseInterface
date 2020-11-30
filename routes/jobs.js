@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const getAllQuery = 'SELECT `Jobs`.`job_name`, `Jobs`.`job_id`, `Jobs`.`company_id`, `Jobs`.`location`, `Companies`.`company_name` FROM `Jobs` INNER JOIN `Companies` ON `Jobs`.`company_id` = `Companies`.`company_id`';
+const getAllQuery = 'SELECT `Jobs`.`job_name`, `Jobs`.`job_id`, `Jobs`.`company_id`, `Jobs`.`location`, `Companies`.`company_name` FROM `Jobs` LEFT OUTER JOIN `Companies` ON `Jobs`.`company_id` = `Companies`.`company_id`';
 const getCompaniesQuery = 'SELECT * FROM `Companies`';
 const insertQuery = 'INSERT INTO `Jobs` (`job_name`, `company_id`, `location`) VALUES (?,?,?)'
 const mysql = require('../dbcon.js');

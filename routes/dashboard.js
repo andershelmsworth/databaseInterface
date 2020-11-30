@@ -227,6 +227,20 @@ router.post('/deleteJC', function (req, res, next) {
 router.post('/jcUpdate', function (req, res, next) {
 	var { time, eid, jid, cid, pid, ct, hours, rt, jcid } = req.body;
 	console.log("updating jcid:", jcid);
+
+	if (eid == 'NULL') {
+		eid = null;
+	}
+	if (jid == 'NULL') {
+		jid = null;
+	}
+	if (cid == 'NULL') {
+		cid = null;
+	}
+	if (pid == 'NULL') {
+		pid = null;
+	}
+
 	mysql.query(updateQuery, [time, eid, jid, cid, pid, ct, hours, rt, jcid], (err, result) => {
 		if (err) {
 			next(err);

@@ -22,6 +22,7 @@
             <label for="cname">Company Name:</label><br>
             <select type="text" id="cname" name="cname">
             <% compResults.forEach(function(comp){ %>
+                <option value="">None</option>
                 <option value="<%= comp.company_id %>"><%= comp.company_name %></option>
             <% }) %>
             </select><br><br>
@@ -38,6 +39,7 @@
             <th>Job ID</th>
             <th>Job Name</th>
             <th>Company ID</th>
+            <th>Company Name</th>
             <th>Job Location</th>
         </thead>
         <tbody>
@@ -46,6 +48,7 @@
             <td><%= thing.job_id %></td>
             <td><%= thing.job_name %></td>
             <td><%= thing.company_id %></td>
+            <td><%= thing.company_name %></td>
             <td><%= thing.location %></td>
         </tr>
         <% }) %>

@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const getAllQuery = 'SELECT * FROM `Equip_crew`';
+const getAllQuery = 'SELECT `Equip_crew`.`relation_id`, `Equip_crew`.`equip_id`, `Equipment`.`equip_name`, `Equip_crew`.`crew_id`, `Crews`.`crew_name`  FROM `Equip_crew` INNER JOIN `Equipment` ON `Equipment`.`equip_id` = `Equip_crew`.`equip_id` INNER JOIN Crews ON `Equip_crew`.`crew_id` = `Crews`.`crew_id` ORDER BY `Equip_crew`.`relation_id`';
 const getEquipmentQuery = 'SELECT * FROM `Equipment`';
 const getCrewsQuery = 'SELECT * FROM `Crews`';
 const insertQuery = 'INSERT INTO `Equip_crew` (`equip_id`, `crew_id`) VALUES (?,?)'

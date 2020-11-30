@@ -21,8 +21,8 @@
             <input type="text" id="jname" name="jname"><br><br>
             <label for="cname">Company Name:</label><br>
             <select type="text" id="cname" name="cname">
+            <option value="">None</option>
             <% compResults.forEach(function(comp){ %>
-                <option value="">None</option>
                 <option value="<%= comp.company_id %>"><%= comp.company_name %></option>
             <% }) %>
             </select><br><br>

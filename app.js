@@ -28,6 +28,21 @@ app.use(session({
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 
+//Need CORS for dashboard
+var CORS = require('cors');
+
+var corsOptions = {
+    "origin": "*",
+    "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+    "preflightContinue": false,
+    "optionsSuccessStatus": 204,
+    "allowedHeaders": "Content-Type,Authorization"// some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+
+app.use(CORS());
+app.options('/deleteJC', CORS());
+
+
 /* This allows accessing resources using '/resource' instead of '/public/resource' (CSS, Images, etc...) */
 app.use(express.static(__dirname + '/public'));
 app.use('/public',  express.static(__dirname + '/public'));

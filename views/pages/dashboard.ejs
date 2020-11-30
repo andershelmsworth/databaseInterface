@@ -1,3 +1,4 @@
+
 <!-- views/pages/index.ejs -->
 
 <!DOCTYPE html>
@@ -16,6 +17,7 @@
         <h1>Financials Dashboard</h1><br>
         <h3>View, edit, and add Job Cost information below.</h3><br>
 		<h5>Use the search boxes below to filter expenses, or scroll to the bottom to add a new expense.</h5>
+		<h9>Note: the date filter will find all expenses after the selected date.</h9>
 	<br>
 	<table id="jcost">
 		<thead>
@@ -36,12 +38,41 @@
 			<form id="filterDashboardForm" method="POST" action="/filterDashboardForm">
 				<tr>
 				<td><input type="datetime-local" id="dtime2" name="dtime2"></td>
-				<td><input type="number" id="eid2" name="eid2"></td>
-				<td><input type="number" id="jid2" name="jid2"></td>
-				<td><input type="number" id="cid2" name="cid2"></td>
-				<td><input type="number" id="pid2" name="pid2"></td>
+				<td>
+					<select type="text" id="eid2" name="eid2">
+						<option value="">No Selection</option>	
+						<% eidSelections.forEach(function(equips){ %>
+							<option value="<%= equips.equip_id %>"><%= equips.equip_name %></option>
+						<% }) %>
+					</select>
+				</td>
+				<td>
+					<select type="text" id="jid2" name="jid2">
+						<option value="">No Selection</option>
+						<% jidSelections.forEach(function(jobs){ %>
+							<option value="<%= jobs.job_id %>"><%= jobs.job_name %></option>
+						<% }) %>
+					</select>
+				</td>				
+				<td>
+					<select type="text" id="cid2" name="cid2">
+						<option value="">No Selection</option>	
+						<% cidSelections.forEach(function(crews){ %>
+							<option value="<%= crews.crew_id %>"><%= crews.crew_name %></option>
+						<% }) %>
+					</select>
+				</td>	
+				<td>
+					<select type="text" id="pid2" name="pid2">
+						<option value="">No Selection</option>	
+						<% pidSelections.forEach(function(phases){ %>
+							<option value="<%= phases.phase_id %>"><%= phases.phase_name %></option>
+						<% }) %>
+					</select>
+				</td>					
 				<td>
 					<select id="ct2" name="ct2">
+						<option value=""></option>
 						<option value="LS">Lump Sum</option>
 						<option value="C+">Cost Plus</option>
 					</select></td>
@@ -53,54 +84,194 @@
 				<td><input type="submit" value="Reset Filters"></td>
 			</form>
 			</tr>
-			
-			<% results.forEach(function(thing){ %>
-        <tr>
-			<td><%= thing.date_time %></td>
-			<td><%= thing.equip_id %></td>
-			<td><%= thing.job_id %></td>
-			<td><%= thing.crew_id %></td>
-			<td><%= thing.phase_id %></td>
-			<td><%= thing.cost_type %></td>
-			<td><%= thing.hours %></td>
-			<td><%= thing.rate %></td>
-			<td>
-			<button type="button">Edit</button>
-			</td>
-			<td>
-			<button type="button">Delete</button>
-			</td>
-		</tr>
+
+			<% jcCounter = 0; %>
+			<% results.forEach(function(row){ %>
+				<form method="POST" action="/jcUpdate">
+				<tr id="<%= row.job_cost_id %>">
+					<td style="display:none !important;" name="jid"><%= row.job_cost_id %></td>
+					<td name="time"><input name="time" type="datetime-local" value="<%= row.caldate %>T<%= row.time %>" disabled required></td>
+					<td>
+						<select name="eid" value="<%= row.equip_id %>" disabled>
+							<% eidSelections.forEach(function(equips){ %>
+								<% if (row.equip_id == equips.equip_id){ %>
+									<option value="<%= equips.equip_id %>" selected="selected"><%= equips.equip_name %></option>
+								<% } else { %>  
+									<option value="<%= equips.equip_id %>"><%= equips.equip_name %></option>
+								<% } %>
+
+							<% }) %>
+
+							<% if (row.equip_id === null){ %>
+									<option value="NULL" selected="selected">NULL</option>
+								<% } else { %>  
+									<option value="NULL">NULL</option>
+								<% } %>
+						</select>
+					</td>
+					<td>
+						<select name="jid" id="jid" value="<%= row.job_id %>" disabled>
+						<% jidSelections.forEach(function(jobs){ %>
+							<% if (row.job_id == jobs.job_id){ %>
+								<option value="<%= jobs.job_id %>" selected="selected"><%= jobs.job_name %></option>
+							<% } else { %>  
+								<option value="<%= jobs.job_id %>"><%= jobs.job_name %></option>
+							<% } %>
+						<% }) %>
+
+						<% if (row.job_id === null){ %>
+									<option value="NULL" selected="selected">NULL</option>
+								<% } else { %>  
+									<option value="NULL">NULL</option>
+								<% } %>
+						</select>
+					</td>
+					<td>
+					<select name="cid" id="cid" value="<%= row.crew_id %>" disabled>
+						<% cidSelections.forEach(function(crews){ %>
+							<% if (row.crew_id == crews.crew_id){ %>
+								<option value="<%= crews.crew_id %>" selected="selected"><%= crews.crew_name %></option>
+							<% } else { %>  
+								<option value="<%= crews.crew_id %>"><%= crews.crew_name %></option>
+							<% } %>
+						<% }) %>
+
+						<% if (row.crew_id === null){ %>
+									<option value="NULL" selected="selected">NULL</option>
+								<% } else { %>  
+									<option value="NULL">NULL</option>
+								<% } %>
+						</select>
+					</td>
+					
+					<td>
+					<select name="pid" id="pid" disabled>
+						<% pidSelections.forEach(function(phases){ %>
+							<% if (row.phase_id == phases.phase_id){ %>
+								<option value="<%= phases.phase_id %>" selected="selected"><%= phases.phase_name %></option>
+							<% } else { %>  
+								<option value="<%= phases.phase_id %>"><%= phases.phase_name %></option>
+							<% } %>
+						<% }) %>
+
+						<% if (row.phase_id === null){ %>
+									<option value="NULL" selected="selected">NULL</option>
+								<% } else { %>  
+									<option value="NULL">NULL</option>
+								<% } %>
+						</select>
+					</td>
+					<td>
+					
+					<select name="ct" id="ct" value="<%= row.cost_type %>" disabled required>
+							<% if (row.cost_type == "C+"){ %>
+								<option value="C+" selected="selected">C+</option>
+								<option value="LS">LS</option>
+								<% } else { %> 
+								<option value="C+">C+</option>
+								<option value="LS" selected="selected">LS</option> 
+							<% } %>
+						</select>
+					</td>
+					<td>
+					<input type="number" name="hours" value="<%= row.hours %>" disabled required>
+					</td>
+					<td><input type="number" name="rt" value="<%= row.rate %>" disabled required></td>
+					<td>
+					<button type="button" name="editButton" style="background-color: #007bff !important; color: #FFFFFF !important; border-radius: 4px;">Edit</button>
+					<button type="submit" name="updateButton" style="display:none !important">Update</button>
+					</td>
+					<td>
+					<form id="deleteJCForm" method="POST" action="/deleteJC">
+					<input type="hidden" name="jcid" value="<%= row.job_cost_id %>">
+					<button type="submit" style="background-color: #e60000 !important; color: #FFFFFF !important; border-radius: 4px;">Delete</button>
+					</form>
+					</td>
+				</tr>
+				</form>
+		<% jcCounter = jcCounter + 1; %>
       <% }) %>
-	  
+
 		</tbody>
 	</table>
 	<br>
 	<br>
-	
+	<script>
+	  document.getElementById("jcost").addEventListener("click",
+	function enableRow(submission) {
+
+		let target = event.target;
+
+		if (target.name != 'editButton') {
+			return;
+		}
+    else {
+    	console.log("hit edit button");
+		parentTr = target.parentNode.parentNode;
+
+		for (let i = 0; i < parentTr.children.length; i++) {
+			let chosenRow = parentTr.children[i].children[0];
+			if (chosenRow !== undefined) {
+				chosenRow.removeAttribute("disabled");
+			}
+		}
+		let targetParent = target.parentNode;
+		targetParent.children[1].setAttribute("style", "background-color: #45a049 !important; color: #FFFFFF !important; border-radius: 4px;");
+		target.setAttribute("style", "display:none !important;");
+    }
+    });
+
+		</script>
 	<table><tbody><tr><td>
     <span id="add">
     <h5>Add a new expense item</h5>
-		<form>
+	<form id="addJobCostForm" method="POST" action="/AddJobCost">
 		<label for="dtime">Date/Time</label><br>
-  <input type="datetime-local" id="dtime" name="dtime"><br><br>
-  <label for="eid">Equipment ID</label><br>
-  <input type="number" id="eid" name="eid"><br>
-  <label for="jid">Job ID</label><br>
-  <input type="number" id="jid" name="jid"><br>
-  <label for="cid">Crew ID</label><br>
-  <input type="number" id="cid" name="cid"><br>
-  <label for="pid">Phase ID</label><br>
-  <input type="number" id="pid" name="pid"><br>
+  <input type="datetime-local" id="dtime" name="dtime" required><br><br>
+  <label for="eid4">Equipment ID</label><br>
+  <select type="text" id="eid4" name="eid4" required>
+  <option value="NULL">No Selection</option>
+						<% eidSelections.forEach(function(equips){ %>
+							<option value="<%= equips.equip_id %>"><%= equips.equip_name %></option>
+						<% }) %>
+					</select>
+
+  <label for="jid4">Job ID</label><br>
+  <select type="text" id="jid4" name="jid4" required>
+  <option value="NULL">No Selection</option>
+						<% jidSelections.forEach(function(jobs){ %>
+							<option value="<%= jobs.job_id %>"><%= jobs.job_name %></option>
+						<% }) %>
+					</select>
+  <br>
+
+  <label for="cid4">Crew ID</label><br>
+  <select type="text" id="cid4" name="cid4" required>
+  <option value="NULL">No Selection</option>
+						<% cidSelections.forEach(function(crews){ %>
+							<option value="<%= crews.crew_id %>"><%= crews.crew_name %></option>
+						<% }) %>
+					</select>
+  <br>
+
+  <label for="pid4">Phase ID</label><br>
+  <select type="text" id="pid4" name="pid4" required>
+  <option value="NULL">No Selection</option>
+						<% pidSelections.forEach(function(phases){ %>
+							<option value="<%= phases.phase_id %>"><%= phases.phase_name %></option>
+						<% }) %>
+					</select>
+  <br>
+
   <label for="ct">Cost Type</label><br>
-<select id="ct" name="ct">
+<select id="ct" name="ct" required>
   <option value="ls">Lump Sum</option>
   <option value="cplus">Cost Plus</option>
 </select><br>
 <label for="hours">Hours</label><br>
-  <input type="number" id="hours" name="hours"><br>
+  <input type="number" id="hours" name="hours" required><br>
   <label for="rate">Rate</label><br>
-  <input type="number" id="rate" name="rate"><br>
+  <input type="number" id="rate" name="rate" required><br>
   <input type="submit" value="Submit"><br>
 </form>
 		<br>

@@ -1,7 +1,22 @@
+//requirements
 var express = require('express');
+var app = express();
+var CORS = require('cors');
 var router = express.Router();
-const getAllQuery = 'SELECT * FROM `Crews`';
 const mysql = require('../dbcon.js');
+var bodyParser = require('body-parser');
+
+//Post processing
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.text({ type: "text/plain" }));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(CORS());
+
+//SQL queries
+const insertQuery = "INSERT INTO `Crews` (`crew_name`) VALUES(?);";
+const getAllQuery = 'SELECT `crew_id`, `crew_name` from `Crews`';
 
 function getAllData(res) {
 	mysql.query(getAllQuery, (err, rows, fields) => {
@@ -17,6 +32,7 @@ function getAllData(res) {
 			res.render('pages/Crews', {
 				results: rows
 			});
+			console.log("reloaded");
 		}
 	});
 };
@@ -35,5 +51,20 @@ router.get('/crews', function (req, res, next) {
 	});
 
 });
+
+router.post('/crews', function (req, res, next) {
+	var cname = req.body["name"];
+	console.log("posted");
+	mysql.query(insertQuery, [cname], (err, result) => {
+		if (err) {
+			next(err);
+			return;
+		}
+		console.log("no errors");
+		getAllData(res);
+		
+	});
+});
+
 
 module.exports = router;

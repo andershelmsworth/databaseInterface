@@ -18,32 +18,52 @@
 
 		<br>
 		<h5>Add a new relationship</h5>
-		<form>
-		<label for="eid">Equipment ID</label><br>
-  <input type="text" id="eid" name="eid"><br>
-  <label for="cid">Crew ID:</label><br>
-  <input type="text" id="cid" name="cid"><br><br>
-  <input type="submit" value="Submit"><br>
+		<form id="inputForm" action="/addPC" method="POST">
+		<label for="pid">Phase Name</label><br>
+		<select id="pid" name="pid">
+		<% pidSelections.forEach(function(thing){ %>
+		<option value="<%= thing.phase_id %>"><%= thing.phase_name %></option>
+		<% }) %>
+		</select>><br>
+  <label for="cid">Crew Name:</label><br>
+  <select id="cid" name="cid">
+		<% cidSelections.forEach(function(thing){ %>
+		<option value="<%= thing.crew_id %>"><%= thing.crew_name %></option>
+		<% }) %>
+		</select><br><br>
+  <input type="submit" value="Submit">
+				</form>
+  
+  
+  <br>
 </form>
-
 		<br>
 		<h5>Browse existing relationships</h5>
-		<table>
+		<table id="relationshipTable">
 		<thead>
 		<tr>
 			<th>Relation ID</th>
 			<th>Phase ID</th>
+			<th>Phase Name</th>
 			<th>Crew ID</th>
+			<th>Crew Name</th>
 			<th></th>
 		</thead>
 		<tbody>
 		<% results.forEach(function(thing){ %>
-        <tr>
+        <tr id="<%= thing.relation_id %>">
 			<td><%= thing.relation_id %></td>
 			<td><%= thing.phase_id %></td>
+			<td><%= thing.phase_name %></td>
 			<td><%= thing.crew_id %></td>
+			<td><%= thing.crew_name %></td>
 			<td>
-			<button type="button">Delete</button>
+
+			<form id="deletePCform" method="POST" action="/deletePC">
+					<input type="hidden" id="rid" name="rid" value="<%= thing.relation_id %>">
+					<button type="submit" style="background-color: #e60000 !important; color: #FFFFFF !important; border-radius: 4px;">Delete</button>
+				</form>
+
 			</td>
 		</tr>
       <% }) %>

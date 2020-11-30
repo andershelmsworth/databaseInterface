@@ -12,7 +12,7 @@ const getJCQuery = 'SELECT `job_cost_id`,  CAST(CONVERT(`date_time`, DATE) AS VA
 const deleteQuery = 'DELETE FROM `Job_cost` WHERE `job_cost_id` = ?;';
 const insertQuery = "INSERT INTO `Phase_crew` (`phase_id`, `crew_id`) VALUES(?,?);";
 const insertJobCostQuery = 'INSERT INTO `Job_cost` (`date_time`, `equip_id`, `job_id`, crew_id, phase_id, cost_type, hours, rate) VALUES (?,?,?,?,?,?,?,?)'
-const updateQuery = 'UPDATE`Job_cost` SET `date_time` = ?, `equip_id` = ?, `job_id` = ?, `crew_id` = ?, `phase_id` = ?, `cost_type` = ?, `hours` = ?, `rate` = ? WHERE`job_cost_id` = ?;';
+const updateQuery = 'UPDATE `Job_cost` SET `date_time` = ?, `equip_id` = ?, `job_id` = ?, `crew_id` = ?, `phase_id` = ?, `cost_type` = ?, `hours` = ?, `rate` = ? WHERE `job_cost_id` = ?;';
 
 function getAllData(res) {
 	let context = {};
@@ -227,6 +227,20 @@ router.post('/deleteJC', function (req, res, next) {
 router.post('/jcUpdate', function (req, res, next) {
 	var { time, eid, jid, cid, pid, ct, hours, rt, jcid } = req.body;
 	console.log("updating jcid:", jcid);
+
+	if (eid == 'NULL') {
+		eid = null;
+	}
+	if (jid == 'NULL') {
+		jid = null;
+	}
+	if (cid == 'NULL') {
+		cid = null;
+	}
+	if (pid == 'NULL') {
+		pid = null;
+	}
+
 	mysql.query(updateQuery, [time, eid, jid, cid, pid, ct, hours, rt, jcid], (err, result) => {
 		if (err) {
 			next(err);

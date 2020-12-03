@@ -21,7 +21,9 @@
 			<input type="text" id="pname" name="pname"><br>
 			
 			<label for="jid">Job Name</label><br>
+
 		<select id="jid" name="jid">
+		<option value="">None</option>
 		<% jidSelections.forEach(function(thing){ %>
 		<option value="<%= thing.job_id %>"><%= thing.job_name %></option>
 		<% }) %>

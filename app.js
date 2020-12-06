@@ -16,6 +16,7 @@ app.set('view engine', 'ejs');
 var mysql = require('./dbcon.js');
 app.set('mysql', mysql);
 
+//Parameters for using express-session
 app.use(session({
     secret: 'ssshhhhh',
     // create new redis store.
@@ -31,6 +32,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //Need CORS for dashboard
 var CORS = require('cors');
 
+//Options for instantiating CORS
 var corsOptions = {
     "origin": "*",
     "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
@@ -39,9 +41,9 @@ var corsOptions = {
     "allowedHeaders": "Content-Type,Authorization"// some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
+//Pass the specified options to CORS
 app.use(CORS());
 app.options('/deleteJC', CORS());
-
 
 /* This allows accessing resources using '/resource' instead of '/public/resource' (CSS, Images, etc...) */
 app.use(express.static(__dirname + '/public'));
@@ -78,11 +80,13 @@ app.use(route_companies);
  * Error pages
  ******************/
 
+//Page not found
 app.use(function (req, res) {
     res.status(404);
     res.render('404');
 });
 
+//Server error
 app.use(function (err, req, res, next) {
     console.error(err.stack);
     res.status(500);
@@ -94,7 +98,7 @@ app.use(function (err, req, res, next) {
 /******************
  * Launch communication
  ******************/
-
+//Listen on the specified port
 const port = 8080;
 app.listen(port);
 console.log('Server is running at http://localhost:8080/.\nCMD+C to quit.');

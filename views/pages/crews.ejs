@@ -1,5 +1,6 @@
 <!-- views/pages/index.ejs -->
 
+<!--  Doctype and head tags -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,25 +8,30 @@
 </head>
 <body class="container">
 
+<!-- Header stub -->
 <header>
     <%- include ('../partials/dashboardHeader') %>
 </header>
 
 <main>
+<!-- primary div -->
     <div class="jumbotron">
     <h1>Crews</h1>
         <h3>View and add job crews below.</h3><br>
 		<h5>Add a new crew</h5>
+		<!--  Form for adding a new crew to the database -->
 		<form id="crewAddForm">
 		<label for="cname">Crew Name</label><br>
   <input type="text" id="cname" name="cname"><br><br>
   <input type="submit" value="Submit" id="crewAddButton"><br>
 </form>
+	<!--  Event listener for the form's submit button, builds & sends XHR -->
 		<script>
 			document.getElementById("crewAddButton").addEventListener("click", 
 			function addNewCrew(submission){
 				//submission.preventDefault();
-				let fullUrl = "http://localhost:8080/Crews";
+				//Set URL for submission
+				let fullUrl = "/Crews";
 
 				//Initialize new request object
 				let requestObject = new XMLHttpRequest();
@@ -38,8 +44,8 @@
 				requestObject.open('POST', fullUrl, true);
 				requestObject.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
+				//Set body and inputName parameters
 				let body = {"yes": 1};
-
 				let inputName = document.getElementById('cname').value;
 
 				//Make async
@@ -56,6 +62,8 @@
 						console.log("error making connection");
 					}
 				});
+
+				//Actually send the request, then reload the page
 				console.log(JSON.stringify(body));
 				requestObject.query = body;
 				requestObject.send("name=" + inputName);
@@ -64,6 +72,7 @@
 		</script>
 		<br>
 		<h5>Browse existing crews</h5>
+		<!-- Table for displaying crews -->
 		<table>
 		<thead>
 		<tr>
@@ -71,6 +80,7 @@
 			<th>Crew Name</th>
 		</thead>
 		<tbody>
+		<!--  This loop iterates over each returned row and populates each td with the row's attributes -->
 		<% results.forEach(function(thing){ %>
         <tr>
 			<td><%= thing.crew_id %></td>
@@ -79,6 +89,7 @@
       <% }) %>
 	  </tbody>
 	  </table>
+	  <!-- Fix table layout -->
 	  <style type="text/css">
 	  table {
 		border-collapse: separate;
@@ -88,6 +99,7 @@
     </div>
 </main>
 
+<!-- Footer stub -->
 <footer>
     <%- include ('../partials/footer') %>
 </footer>

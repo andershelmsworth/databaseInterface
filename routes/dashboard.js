@@ -133,23 +133,23 @@ function getAllData(res) {
 router.post('/filterDashboardForm', function (req, res, next) {
 
 	//Start stub of the query, decompose the request body
-	var filterQuery = 'SELECT * FROM `Job_cost` WHERE date_time != 0';
+	var filterQuery = 'SELECT `job_cost_id`,  CAST(CONVERT(`date_time`, DATE) AS VARCHAR(10)) AS `caldate`, CONVERT(`date_time`, time) AS `time`, `equip_id`, `job_id`, `crew_id`, `phase_id`, `cost_type`, `hours`, `rate` FROM `Job_cost` WHERE date_time != 0';
 	var { dtime2, eid2, jid2, cid2, pid2, ct2, hours2, rate2 } = req.body;
 
-	//Each of these ifs will add to the query if the relevant fields are nonblank
+	//Each of these ifs will add to the query if the relevant fields are nonblank and nonnull
 	if (dtime2 !== '') {
 		filterQuery = filterQuery + ' AND date_time >= ' + '"' + dtime2[0] + dtime2[1] + dtime2[2] + dtime2[3] + '-' + dtime2[5] + dtime2[6] + '-' + dtime2[8] + dtime2[9] + ' ' + dtime2[11] + dtime2[12] + ':' + dtime2[14] + dtime2[15] + ':00' + '"';
 	}
-	if (eid2 !== '') {
+	if (eid2 !== '' && eid2 !== 'NULL') {
 		filterQuery = filterQuery + ' AND equip_id = ' + eid2;
 	}
-	if (jid2 !== '') {
+	if (jid2 !== '' && jid2 !== 'NULL') {
 		filterQuery = filterQuery + ' AND job_id = ' + jid2;
 	}
-	if (cid2 !== '') {
+	if (cid2 !== '' && cid2 !== 'NULL') {
 		filterQuery = filterQuery + ' AND crew_id = ' + cid2;
 	}
-	if (pid2 !== '') {
+	if (pid2 !== '' && pid2 !== 'NULL') {
 		filterQuery = filterQuery + ' AND phase_id = ' + pid2;
 	}
 	if (ct2 !== '') {
@@ -161,6 +161,27 @@ router.post('/filterDashboardForm', function (req, res, next) {
 	if (rate2 !== '') {
 		filterQuery = filterQuery + ' AND rate = ' + rate2;
 	}
+
+	//Check for the nullable FKs
+	if (eid2 == 'NULL') {
+		eid2 = null;
+		filterQuery = filterQuery + ' AND equip_id IS NULL';
+	}
+	if (jid2 == 'NULL') {
+		jid2 = null;
+		filterQuery = filterQuery + ' AND job_id IS NULL';
+	}
+	if (cid2 == 'NULL') {
+		cid2 = null;
+		filterQuery = filterQuery + ' AND crew_id IS NULL';
+	}
+	if (pid2 == 'NULL') {
+		pid2 = null;
+		filterQuery = filterQuery + ' AND phase_id IS NULL';
+	}
+
+	//Terminal semicolon
+	filterQuery = filterQuery + ';';
 
 	//Query is built, pass to the DB
 	query = mysql.query(filterQuery, (err, frows, fields) => {
@@ -333,10 +354,24 @@ router.post('/jcUpdate', function (req, res, next) {
 router.post('/AddJobCost', function (req, res, next) {
 	//adds jobCost to database
 	//Decompose the request body
-	var { dtime, eid, jid, cid, pid, ct, hours, rate } = req.body;
+	var { dtime, eid4, jid4, cid4, pid4, ct, hours, rate } = req.body;
+
+	//These ifs collectively check for the nullable FKS
+	if (eid4 == 'NULL') {
+		eid4 = null;
+	}
+	if (jid4 == 'NULL') {
+		jid4 = null;
+	}
+	if (cid4 == 'NULL') {
+		cid4 = null;
+	}
+	if (pid4 == 'NULL') {
+		pid4 = null;
+	}
 
 	//Query the DB with the data from the form
-    mysql.query(insertJobCostQuery, [dtime, eid, jid, cid, pid, ct, hours, rate], (err, rows, fields) => {
+    mysql.query(insertJobCostQuery, [dtime, eid4, jid4, cid4, pid4, ct, hours, rate], (err, rows, fields) => {
 		if (err) {
 			//Errors, returning
             next(err);

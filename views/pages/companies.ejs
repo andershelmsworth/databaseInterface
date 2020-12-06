@@ -22,13 +22,13 @@
         <!--  Form for adding a new company to the database -->
         <form id="addCompanyForm" method="POST" action="/AddCompany">
             <label for="cname">Company Name:</label><br>
-            <input type="text" id="cname" name="cname"><br><br>
+            <input type="text" id="cname" name="cname" required><br><br>
             <label for="cbudget">Company Budget:</label><br>
-            <input type="text" id="cbudget" name="cbudget"><br><br>
+            <input type="number" id="cbudget" name="cbudget" min="0"><br><br>
             <label for="texpenses">Total Expenses:</label><br>
-            <input type="text" id="texpenses" name="texpenses"><br><br>
+            <input type="number" id="texpenses" name="texpenses" min="0"><br><br>
             <label for="trevenue">Total Revenue:</label><br>
-            <input type="text" id="trevenue" name="trevenue"><br><br>
+            <input type="number" id="trevenue" name="trevenue"><br><br>
             <label for="hqlocation">HQ Location:</label><br>
             <input type="text" id="hqlocation" name="hqlocation"><br><br>
             <input type="submit" value="Submit"><br>

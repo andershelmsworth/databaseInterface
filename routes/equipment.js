@@ -35,6 +35,11 @@ router.post('/AddEquipment', function (req, res, next) {
 	//Decompose the request body
 	var { ename, etype, eweight, ftype, edate } = req.body;
 
+	//Check for the nullable date
+	if (edate == '') {
+		edate = null;
+	}
+
 	//Pass the data from the form in an insert query to the db
     mysql.query(insertQuery, [ename, etype, eweight, ftype, edate], (err, rows, fields) => {
 		if (err) {

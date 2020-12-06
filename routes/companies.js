@@ -31,7 +31,20 @@ function getAllData(res) {
 router.post('/AddCompany', function (req, res, next) {
     //adds company to database
 	//decompose data from the request
-    var { cname, cbudget, texpenses, trevenue, hqlocation } = req.body;
+	var { cname, cbudget, texpenses, trevenue, hqlocation } = req.body;
+
+	//Handle the nullable form inputs
+	//These ifs collectively check for the nullable fields
+	if (cbudget == '') {
+		cbudget = null;
+	}
+	if (texpenses == '') {
+		texpenses = null;
+	}
+	if (trevenue == '') {
+		trevenue = null;
+	}
+
     mysql.query(insertQuery, [cname, cbudget, texpenses, trevenue, hqlocation], (err, rows, fields) => {
         if (err) {
             next(err);

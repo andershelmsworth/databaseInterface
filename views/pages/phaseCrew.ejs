@@ -1,5 +1,6 @@
 <!-- views/pages/index.ejs -->
 
+<!--  Doctype and head tags -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,26 +8,30 @@
 </head>
 <body class="container">
 
+<!--  Header stub -->
 <header>
     <%- include ('../partials/dashboardHeader') %>
 </header>
 
 <main>
+	<!-- primary div -->
     <div class="jumbotron">
         <h1>Phase:Crew M:M Table</h1>
         <h3>Add, view, and delete relationships between phases and crews below.</h3>
-
 		<br>
 		<h5>Add a new relationship</h5>
+		<!-- Form for adding a new relationship -->
 		<form id="inputForm" action="/addPC" method="POST">
 		<label for="pid">Phase Name</label><br>
 		<select id="pid" name="pid">
+		<!-- Loops over all rows in Phases to create the FK dropdown -->
 		<% pidSelections.forEach(function(thing){ %>
 		<option value="<%= thing.phase_id %>"><%= thing.phase_name %></option>
 		<% }) %>
 		</select>><br>
   <label for="cid">Crew Name:</label><br>
   <select id="cid" name="cid">
+		<!-- Loops over all rows in Crews to create the FK dropdown -->
 		<% cidSelections.forEach(function(thing){ %>
 		<option value="<%= thing.crew_id %>"><%= thing.crew_name %></option>
 		<% }) %>
@@ -39,6 +44,7 @@
 </form>
 		<br>
 		<h5>Browse existing relationships</h5>
+		<!-- Table for displaying rows in Phase_crew -->
 		<table id="relationshipTable">
 		<thead>
 		<tr>
@@ -50,6 +56,7 @@
 			<th></th>
 		</thead>
 		<tbody>
+		<!--  This loop iterates over each returned row and populates each td with the row's attributes -->
 		<% results.forEach(function(thing){ %>
         <tr id="<%= thing.relation_id %>">
 			<td><%= thing.relation_id %></td>
@@ -58,7 +65,7 @@
 			<td><%= thing.crew_id %></td>
 			<td><%= thing.crew_name %></td>
 			<td>
-
+			<!--  Form for deleting this row -->
 			<form id="deletePCform" method="POST" action="/deletePC">
 					<input type="hidden" id="rid" name="rid" value="<%= thing.relation_id %>">
 					<button type="submit" style="background-color: #e60000 !important; color: #FFFFFF !important; border-radius: 4px;">Delete</button>
@@ -69,6 +76,7 @@
       <% }) %>
 	  </tbody>
 	  </table>
+	  <!-- Fix table layout -->
 	  <style type="text/css">
 	  table {
 		border-collapse: separate;
@@ -78,6 +86,7 @@
     </div>
 </main>
 
+<!--  Footer stub -->
 <footer>
     <%- include ('../partials/footer') %>
 </footer>

@@ -1,5 +1,6 @@
 <!-- views/pages/index.ejs -->
 
+<!--  Doctype and head tags -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,15 +8,18 @@
 </head>
 <body class="container">
 
+<!-- Header stub -->
 <header>
     <%- include ('../partials/dashboardHeader') %>
 </header>
 
 <main>
+    <!-- primary div -->
     <div class="jumbotron">
         <h1>Equipment</h1>
         <h3>View and add job equipment below.</h3><br>
         <h5>Add new equipment</h5>
+        <!--  Form for adding a new piece of equipment to the database -->
         <form id="addEquipmentForm" method="POST" action="/AddEquipment">
             <label for="ename">Equipment Name:</label><br>
             <input type="text" id="ename" name="ename"><br><br>
@@ -32,6 +36,7 @@
         <br>
 
         <h5>Browse existing equipment</h5>
+        <!-- Table for displaying equipment -->
         <table>
         <thead>
         <tr>
@@ -43,6 +48,7 @@
             <th>Purchase Date</th>
         </thead>
         <tbody>
+        <!--  This loop iterates over each returned row and populates each td with the row's attributes -->
         <% results.forEach(function(thing){ %>
         <tr>
             <td><%= thing.equip_id %></td>
@@ -55,6 +61,7 @@
         <% }) %>
         </tbody>
         </table>
+        <!-- Fix table layout -->
         <style type="text/css">
         table {
         border-collapse: separate;
@@ -64,6 +71,7 @@
     </div>
 </main>
 
+<!-- Footer stub -->
 <footer>
     <%- include ('../partials/footer') %>
 </footer>

@@ -7,7 +7,7 @@ npm install
 node app.js
 ```
 
-and then open http://localhost:8080/.
+and then open http://flip3.engr.oregonstate.edu:3131/dashboard.
 
 ## Directory Layout
 

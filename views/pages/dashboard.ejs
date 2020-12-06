@@ -1,6 +1,7 @@
 
 <!-- views/pages/index.ejs -->
 
+<!--  Doctype and head tags -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,19 +9,23 @@
 </head>
 <body class="container" style="min-width: 1440px !important;">
 
+<!-- Header stub -->
 <header>
     <%- include ('../partials/dashboardHeader') %>
 </header>
 
 <main>
+	<!-- primary div -->
     <div class="jumbotron" style="height: auto !important;">
         <h1>Financials Dashboard</h1><br>
         <h3>View, edit, and add Job Cost information below.</h3><br>
 		<h5>Use the search boxes below to filter expenses, or scroll to the bottom to add a new expense.</h5>
 		<h9>Note: the date filter will find all expenses after the selected date.</h9>
 	<br>
+	<!-- main dashboard table -->
 	<table id="jcost">
 		<thead>
+			<!-- Column headers -->
 			<tr>
 				<th>Date/Time</th>
 				<th>Equipment</th>
@@ -35,12 +40,14 @@
 			</tr>
 		</thead>
 		<tbody>
+		<!-- This row is actually the filter form for the dashboard -->
 			<form id="filterDashboardForm" method="POST" action="/filterDashboardForm">
 				<tr>
 				<td><input type="datetime-local" id="dtime2" name="dtime2"></td>
 				<td>
 					<select type="text" id="eid2" name="eid2">
 						<option value="">No Selection</option>	
+						<!-- loops through and makes Dropdown for equip FKs -->
 						<% eidSelections.forEach(function(equips){ %>
 							<option value="<%= equips.equip_id %>"><%= equips.equip_name %></option>
 						<% }) %>
@@ -49,6 +56,7 @@
 				<td>
 					<select type="text" id="jid2" name="jid2">
 						<option value="">No Selection</option>
+						<!-- loops through and makes dropdown for job FKs -->
 						<% jidSelections.forEach(function(jobs){ %>
 							<option value="<%= jobs.job_id %>"><%= jobs.job_name %></option>
 						<% }) %>
@@ -57,6 +65,7 @@
 				<td>
 					<select type="text" id="cid2" name="cid2">
 						<option value="">No Selection</option>	
+						<!-- loops through and makes dropdown for crew FKs -->
 						<% cidSelections.forEach(function(crews){ %>
 							<option value="<%= crews.crew_id %>"><%= crews.crew_name %></option>
 						<% }) %>
@@ -65,6 +74,7 @@
 				<td>
 					<select type="text" id="pid2" name="pid2">
 						<option value="">No Selection</option>	
+						<!-- loops through and makes dropdown for phase FKs -->
 						<% pidSelections.forEach(function(phases){ %>
 							<option value="<%= phases.phase_id %>"><%= phases.phase_name %></option>
 						<% }) %>
@@ -85,14 +95,17 @@
 			</form>
 			</tr>
 
+			<!-- Filter row is over, now loop through the returned rows in Job_cost -->
 			<% jcCounter = 0; %>
 			<% results.forEach(function(row){ %>
+			<!-- each row is a potential update form -->
 				<form method="POST" action="/jcUpdate">
 				<tr id="<%= row.job_cost_id %>">
 					<td style="display:none !important;" name="jid"><%= row.job_cost_id %></td>
 					<td name="time"><input name="time" type="datetime-local" value="<%= row.caldate %>T<%= row.time %>" disabled required></td>
 					<td>
 						<select name="eid" value="<%= row.equip_id %>" disabled>
+						<!-- loops through and makes Dropdown for equip FKs -->
 							<% eidSelections.forEach(function(equips){ %>
 								<% if (row.equip_id == equips.equip_id){ %>
 									<option value="<%= equips.equip_id %>" selected="selected"><%= equips.equip_name %></option>
@@ -102,6 +115,7 @@
 
 							<% }) %>
 
+							<!-- option for nullable FK -->
 							<% if (row.equip_id === null){ %>
 									<option value="NULL" selected="selected">NULL</option>
 								<% } else { %>  
@@ -111,6 +125,7 @@
 					</td>
 					<td>
 						<select name="jid" id="jid" value="<%= row.job_id %>" disabled>
+						<!-- loops through and makes Dropdown for job FKs -->
 						<% jidSelections.forEach(function(jobs){ %>
 							<% if (row.job_id == jobs.job_id){ %>
 								<option value="<%= jobs.job_id %>" selected="selected"><%= jobs.job_name %></option>
@@ -119,6 +134,7 @@
 							<% } %>
 						<% }) %>
 
+						<!-- option for nullable FK -->
 						<% if (row.job_id === null){ %>
 									<option value="NULL" selected="selected">NULL</option>
 								<% } else { %>  
@@ -128,6 +144,7 @@
 					</td>
 					<td>
 					<select name="cid" id="cid" value="<%= row.crew_id %>" disabled>
+					<!-- loops through and makes Dropdown for crew FKs -->
 						<% cidSelections.forEach(function(crews){ %>
 							<% if (row.crew_id == crews.crew_id){ %>
 								<option value="<%= crews.crew_id %>" selected="selected"><%= crews.crew_name %></option>
@@ -136,6 +153,7 @@
 							<% } %>
 						<% }) %>
 
+						<!-- option for nullable FK -->
 						<% if (row.crew_id === null){ %>
 									<option value="NULL" selected="selected">NULL</option>
 								<% } else { %>  
@@ -146,6 +164,7 @@
 					
 					<td>
 					<select name="pid" id="pid" disabled>
+					<!-- loops through and makes Dropdown for phase FKs -->
 						<% pidSelections.forEach(function(phases){ %>
 							<% if (row.phase_id == phases.phase_id){ %>
 								<option value="<%= phases.phase_id %>" selected="selected"><%= phases.phase_name %></option>
@@ -154,6 +173,7 @@
 							<% } %>
 						<% }) %>
 
+						<!-- option for nullable FK -->
 						<% if (row.phase_id === null){ %>
 									<option value="NULL" selected="selected">NULL</option>
 								<% } else { %>  
@@ -178,10 +198,12 @@
 					</td>
 					<td><input type="number" name="rt" value="<%= row.rate %>" disabled required></td>
 					<td>
+					<!-- buttons for adjusting the row, update is hidden by default -->
 					<button type="button" name="editButton" style="background-color: #007bff !important; color: #FFFFFF !important; border-radius: 4px;">Edit</button>
 					<button type="submit" name="updateButton" style="display:none !important">Update</button>
 					</td>
 					<td>
+					<!-- form for deleting the row -->
 					<form id="deleteJCForm" method="POST" action="/deleteJC">
 					<input type="hidden" name="jcid" value="<%= row.job_cost_id %>">
 					<button type="submit" style="background-color: #e60000 !important; color: #FFFFFF !important; border-radius: 4px;">Delete</button>
@@ -197,24 +219,32 @@
 	<br>
 	<br>
 	<script>
+	//This function changes the edit button to an update button and enables the inputs on its corresponding row
 	  document.getElementById("jcost").addEventListener("click",
 	function enableRow(submission) {
 
 		let target = event.target;
 
 		if (target.name != 'editButton') {
+		//It wasn't an edit button clicked, never mind, return
 			return;
 		}
     else {
     	console.log("hit edit button");
+		//Get the grandparent of the target
 		parentTr = target.parentNode.parentNode;
 
+		//Loop over each td in the row
 		for (let i = 0; i < parentTr.children.length; i++) {
 			let chosenRow = parentTr.children[i].children[0];
+
+			//Enable the input tag in the td
 			if (chosenRow !== undefined) {
 				chosenRow.removeAttribute("disabled");
 			}
 		}
+
+		//Show the update button, hide the edit button on the clicked row
 		let targetParent = target.parentNode;
 		targetParent.children[1].setAttribute("style", "background-color: #45a049 !important; color: #FFFFFF !important; border-radius: 4px;");
 		target.setAttribute("style", "display:none !important;");
@@ -225,12 +255,14 @@
 	<table><tbody><tr><td>
     <span id="add">
     <h5>Add a new expense item</h5>
+	<!-- form for adding a new entry to Job_cost -->
 	<form id="addJobCostForm" method="POST" action="/AddJobCost">
 		<label for="dtime">Date/Time</label><br>
   <input type="datetime-local" id="dtime" name="dtime" required><br><br>
   <label for="eid4">Equipment ID</label><br>
   <select type="text" id="eid4" name="eid4" required>
   <option value="NULL">No Selection</option>
+						<!-- loops through and makes Dropdown for equip FKs -->
 						<% eidSelections.forEach(function(equips){ %>
 							<option value="<%= equips.equip_id %>"><%= equips.equip_name %></option>
 						<% }) %>
@@ -239,6 +271,7 @@
   <label for="jid4">Job ID</label><br>
   <select type="text" id="jid4" name="jid4" required>
   <option value="NULL">No Selection</option>
+						<!-- loops through and makes Dropdown for job FKs -->
 						<% jidSelections.forEach(function(jobs){ %>
 							<option value="<%= jobs.job_id %>"><%= jobs.job_name %></option>
 						<% }) %>
@@ -248,6 +281,7 @@
   <label for="cid4">Crew ID</label><br>
   <select type="text" id="cid4" name="cid4" required>
   <option value="NULL">No Selection</option>
+						<!-- loops through and makes Dropdown for crew FKs -->
 						<% cidSelections.forEach(function(crews){ %>
 							<option value="<%= crews.crew_id %>"><%= crews.crew_name %></option>
 						<% }) %>
@@ -257,6 +291,7 @@
   <label for="pid4">Phase ID</label><br>
   <select type="text" id="pid4" name="pid4" required>
   <option value="NULL">No Selection</option>
+						<!-- loops through and makes Dropdown for phase FKs -->
 						<% pidSelections.forEach(function(phases){ %>
 							<option value="<%= phases.phase_id %>"><%= phases.phase_name %></option>
 						<% }) %>
@@ -280,6 +315,7 @@
     </tr></tbody></table>
 	
     </div>
+	<!-- fixes table layout -->
     <style type="text/css">
 	  table {
 		border-collapse: separate;
@@ -291,6 +327,7 @@
 	  </style>
 </main>
 
+<!-- footer stub -->
 <footer>
     <%- include ('../partials/footer') %>
 </footer>

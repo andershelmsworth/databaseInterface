@@ -12,9 +12,9 @@ const getPhasesQuery = 'SELECT `phase_id`, `phase_name` FROM `Phases`;';
 const getAllQuery = 'SELECT * FROM `Job_cost`';
 
 //Select all rows but fix the date
-//const getJCQuery = 'SELECT `job_cost_id`,  CAST(CONVERT(`date_time`, DATE) AS VARCHAR(10)) AS `caldate`, CONVERT(`date_time`, time) AS `time`, `equip_id`, `job_id`, `crew_id`, `phase_id`, `cost_type`, `hours`, `rate` FROM `Job_cost`;';
+const getJCQuery = 'SELECT `job_cost_id`,  CAST(CONVERT(`date_time`, DATE) AS CHAR(10)) AS `caldate`, CONVERT(`date_time`, time) AS `time`, `equip_id`, `job_id`, `crew_id`, `phase_id`, `cost_type`, `hours`, `rate` FROM `Job_cost`;';
 //const getJCQuery = 'SELECT * from Job_cost';
-const getJCQuery = 'SELECT `job_cost_id`,  CONVERT(`Job_cost`.`date_time`, DATE) AS `caldate`, CONVERT(`date_time`, time) AS `time`, `equip_id`, `job_id`, `crew_id`, `phase_id`, `cost_type`, `hours`, `rate` FROM `Job_cost`;';
+//const getJCQuery = 'SELECT `job_cost_id`,  CAST(CONVERT(`Job_cost`.`date_time`, DATE) AS CHAR(10)) AS `caldate`, CONVERT(`date_time`, time) AS `time`, `equip_id`, `job_id`, `crew_id`, `phase_id`, `cost_type`, `hours`, `rate` FROM `Job_cost`;';
 
 //Queries for the delete/add/update functionality on dashboard
 const deleteQuery = 'DELETE FROM `Job_cost` WHERE `job_cost_id` = ?;';

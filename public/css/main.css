@@ -7,6 +7,10 @@
 	text-align:center;
 }
 
+.ctdropdown {	
+	width: 15%;	
+}
+
 .img-fluid {
 	display: block;
 	margin-left: auto;
@@ -63,6 +67,7 @@ input[type=text], select {
 
 /* Table styling rules */
 table {
+	border: #007bff;
 	text-align: center;
 	width: 100%;
 	border-collapse: collapse;
@@ -97,11 +102,28 @@ table {
 	background-color: #f3f3f3;
   }
 
-  table tbody tr:last-of-type {
-	border-bottom: 2px solid #007bff;
+/*  table tbody tr:last-of-type {  */
+/*	border-bottom: 2px solid #007bff;  */
+ /* }  */
+
+  	  table tbody {	
+	display: block;	
+	max-height: 1000px;	
+	overflow-y: auto;	
+  }	
+  	
+  table thead, table tbody tr {	
+	display: table;	
+	width: 100%;	
+	table-layout: fixed;	
   }
 
   table tbody tr.active-row {
 	font-weight: bold;
 	color: #007bff;
+  }
+  
+  #addJobCostForm {
+	  width:50% !important;
+	  margin-left:25% !important;
   }

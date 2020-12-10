@@ -99,7 +99,8 @@ app.use(function (err, req, res, next) {
  * Launch communication
  ******************/
 //Listen on the specified port
-const port = 8080;
+//const port = 8080;
+var port = process.env.PORT || 8080;
 app.listen(port);
 console.log('Server is running, CMD-C to quit.');
 

@@ -135,7 +135,7 @@ function getAllData(res) {
 router.post('/filterDashboardForm', function (req, res, next) {
 
 	//Start stub of the query, decompose the request body
-	var filterQuery = 'SELECT `job_cost_id`,  CAST(CONVERT(`date_time`, DATE) AS VARCHAR(10)) AS `caldate`, CONVERT(`date_time`, time) AS `time`, `equip_id`, `job_id`, `crew_id`, `phase_id`, `cost_type`, `hours`, `rate` FROM `Job_cost` WHERE date_time != 0';
+	var filterQuery = 'SELECT `job_cost_id`,  CAST(CONVERT(`date_time`, DATE) AS CHAR(10)) AS `caldate`, CONVERT(`date_time`, time) AS `time`, `equip_id`, `job_id`, `crew_id`, `phase_id`, `cost_type`, `hours`, `rate` FROM `Job_cost` WHERE date_time != 0';
 	var { dtime2, eid2, jid2, cid2, pid2, ct2, hours2, rate2 } = req.body;
 
 	//Each of these ifs will add to the query if the relevant fields are nonblank and nonnull

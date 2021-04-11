@@ -1,2 +1,3 @@
 C:\Users\Work\source\repos\databaseInterface\obj\Debug\databaseInterface.njsprojAssemblyReference.cache
 C:\Users\Work\source\repos\databaseInterface\bin\Microsoft.NodejsTools.WebRole.dll
+C:\Users\Work\source\repos\databaseInterface\obj\Debug\databaseInterface.njsproj.CoreCompileInputs.cache
